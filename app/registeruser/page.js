@@ -40,7 +40,7 @@
 import styles from '../../styling/registeruser.module.css'; 
 import { Card, Form, Alert, Button } from "react-bootstrap";
 import { useState} from "react";
-import { registerUsers } from "../authenticate/page";
+import { registerUsers } from "../lib/authenticate/authenticate";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react"; 
 export default function Register() {
