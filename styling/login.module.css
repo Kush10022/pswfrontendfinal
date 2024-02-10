@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Make sure the login takes the full viewport height */
+  height: 100vh;
   background-color: #f0f0f0; /* Adjust the background color as needed */
 }
 
@@ -20,8 +20,7 @@
   align-items: center;
 }
 
-.githubBtn,
-.xingBtn {
+.githubBtn{
   margin: 0.5rem 0;
   padding: 0.5rem 1rem;
   border: none;
