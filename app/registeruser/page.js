@@ -1,10 +1,8 @@
 "use client";
-import styles from '../../styling/registeruser.module.css';
 import { Card, Form, Alert, Button, Container, Row,Col } from "react-bootstrap";
 import { useState } from "react";
 import { registerUsers } from "../lib/authenticate";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export default function Register() {
   const [warning, setWarning] = useState("");
@@ -13,23 +11,9 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [PSW, setPSW] = useState(false);
   const [password, setPassword] = useState("");
-  const colorArray = ['warning', 'primary', 'success', 'danger', 'info', 'secondary'];
-  const [bordercolor, setBordercolor] = useState(0);
-
-  //within 3 seconds b  order color change from info to primary to success
   const router = useRouter();
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setBordercolor((prevIndex) => (prevIndex + 1) % colorArray.length);
-    }, 1000); // Change to the next color after 1 second
 
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-
- // const currentBordercolor = colorArray[bordercolor];
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -49,14 +33,13 @@ export default function Register() {
 
   return (
     //  without the container fluid the bottom and horizontal scroll bar will appear
-    <Container fluid> 
-      <Row>
-        <Col className="max-w-xs p-6 bg-gray-100  rounded-lg shadow-md font-bold" xs={12} md={6} lg={4} xl={4} xxl={5}>
+    //  the min-h-screen is to make the page full height
+    <Container fluid className="min-h-screen"> 
+      <Row className="min-h-screen">
+        <Col xs={12} md={6} lg={6} xl={6} xxl={6}>
         <div className='w-10/12 justify-center items-center px-20'>
           <div>
-          <Card>
-            <Card.Body  className='text-slate-100 font-bold'><h2 className='text-xl text-center'>Register:</h2><h3 className='font-semibold text-lg text-center'>Create account to avail services</h3></Card.Body>
-          </Card>
+            <div  className='font-bold'><h2 className='text-xl text-center'>Register:</h2><h3 className='font-semibold text-lg text-center'>Create account to avail services</h3></div>
           <br />
           <Form onSubmit={handleSubmit}>
             <Form.Group>
@@ -81,13 +64,13 @@ export default function Register() {
             </Form.Group>
             {warning && (<><br /><Alert variant="danger">{warning}</Alert></>)}
             {/* className="pull-right" */}
-            <Button className="mt-5 py-2 px-5 text-white rounded cursor-pointer hover:bg-blue-700" variant="dark" type="submit">Register</Button>
+            <Button variant="primary" type="submit" className="w-full mt-4 py-2 text-black">Register</Button>
           </Form>  
           </div>
           </div>
         </Col>
 
-        <Col md={6} lg={8} xl={8} xxl={7}>
+        <Col md={6} lg={6} xl={6} xxl={6}>
               <div className='flex flex-col justify-center items-center h-full rounded-md mt-2 pt-10 pb-10  bg-emerald-600'>
                 <div className='w-1/2'>
                   <h2 className='text-4xl text-slate-100 text-center font-bold'>PSW Support and Care</h2>
@@ -101,7 +84,6 @@ export default function Register() {
                 </div>
             </div>
         </Col>
-
       </Row>
     </Container>
   );
