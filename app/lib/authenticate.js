@@ -1,5 +1,5 @@
 export async function registerUsers(email, password, firstName, lastName, PSW) {
-    console.log("will send:",email, password, firstName, lastName, PSW);
+    // console.log("will send:",email, password, firstName, lastName, PSW);
 
     const payload = {
         email: email,
