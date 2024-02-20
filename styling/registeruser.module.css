@@ -1,12 +1,12 @@
-.formContainer {
+/* .formContainer {
     max-width: 500px;
-    margin: 0 auto;
-    padding: 5px;
-    background-color: #f9f9f9;
+    /* margin: 0 auto; */
+    /* padding: 25px; */
+    /* background-color: #f9f9f9;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+  /* } */
+   
   .submitButton {
     margin-top: 20px;
     padding: 10px 20px;
