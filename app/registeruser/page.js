@@ -13,8 +13,6 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-
-
   async function handleSubmit(e) {
     e.preventDefault();
     try {

@@ -1,10 +1,12 @@
 /* login.module.css */
 
+
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Make sure the login takes the full viewport height */
+  /* height: calc(100vh - 4rem); */
+  height: 100vh;
   background-color: #f0f0f0; /* Adjust the background color as needed */
 }
 
@@ -20,8 +22,7 @@
   align-items: center;
 }
 
-.githubBtn,
-.xingBtn {
+.githubBtn{
   margin: 0.5rem 0;
   padding: 0.5rem 1rem;
   border: none;
@@ -103,7 +104,7 @@
 .infoContainer {
   width: 20%;
   padding: 2rem;
-  background: linear-gradient(130deg, #ff7e5f, #feb47b);
+  background: rgb(6 95 70);
   border-radius: 10px;
   color: white;
   text-align: center;
