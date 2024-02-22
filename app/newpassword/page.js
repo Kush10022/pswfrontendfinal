@@ -5,10 +5,7 @@ import { resetPassword } from "../lib/newpassword";
 import { useRouter } from "next/navigation";
 
 
-export default function newpassword(){
-
-    
-    
+export default function Newpassword(){
    
     const [password, setPassword] = useState("");
 

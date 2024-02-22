@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Button, Form } from 'react-bootstrap';
 import { initiatePasswordReset } from "../lib/resetpassword";
 
-export default function resetPassword() {
+export default function ResetPassword() {
     const [email, setEmail] = useState("");
 
     async function handleSubmit(e) {
