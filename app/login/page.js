@@ -26,7 +26,7 @@ export default function Login() {
                       <input type="checkbox" id="rememberMe" />
                       <label htmlFor="rememberMe">Remember me</label>
                       </div>
-                      <Link  href="#" className={styles.forgotPassword}>Forgot password</Link>
+                      <Link  href="/resetPassword" className={styles.forgotPassword}>Forgot password</Link>
                       <Link  href="#">
                       <Button type="submit">Login</Button>
                       </Link>
