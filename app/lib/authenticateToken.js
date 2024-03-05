@@ -13,14 +13,20 @@ export async function validatePasswordResetToken(token) {
         
         if (response.ok) {
             console.log(`The token is valid ! `);
+            return true;
             // Perform further actions if needed
         } else {
             console.log('Token is invalid', responseData);
             // Handle invalid token case
+            return false;
         }
+
+        
+
     } catch (error) {
         console.error('Error validating password reset token', error);
         // Handle error case
+        return false;
     }
   }
   

@@ -1,57 +1,79 @@
 "use client";
 import { Card, Form, Alert, Button, Container, Row,Col, FormGroup } from "react-bootstrap";
 import { useState } from "react";
-import { resetPassword } from "../lib/newpassword";
+import { newPasswordResetting } from "../lib/newpassword";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from 'next/navigation'
+import { Suspense } from "react";
+import styles from '../../styling/resetpassword.module.css';
+
+function GetQuery() {
+
+  const [password, setPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token');
+
+  const router = useRouter();
+
+
+  
+  async function handleSubmit(e) {
+    e.preventDefault();
+   
+  try{
+    const response = await newPasswordResetting(token , password);
+    console.log("Password reset successful");
+    console.log(`password is : ${password}`);
+    setError("Password Reset Successful!");
+    router.push(`/login`);
+    
+} catch (err) {
+  console.log(err)
+  setError("Error in resetting password!");
+}
+}
+
+  return (
+    <>
+    <div className={styles.container}>
+        <div className={styles.loginContainer}>
+          <h2 className={styles.heading}>Enter your new Password</h2>
+          <hr/>
+          <br/>
+          <p>   Please enter a new password for your account</p>
+          <div className= {styles.myContainer}>
+          <form className={styles.loginForm} onSubmit={handleSubmit}>
+            <input type="password" value={password} placeholder="New Password" onChange={e => setPassword(e.target.value)}/>
+            <hr/>
+            <div className="={styles.btnstyle}">
+              <Button   type="submit" className={styles.mybutton} disabled={isSubmitting}>Change Password</Button>
+            </div>
+            </form>
+            {error && <p className={styles.error}>{error}</p>}
+            </div>
+       
+          
+          <hr/>
+        </div>
+      </div>
+
+    
+    
+    </>
+  );
+
+
+}
 
 
 export default function Newpassword(){
    
-    const [password, setPassword] = useState("");
-
-    const router = useRouter();
-  
-    async function handleSubmit(e) {
-      e.preventDefault();
-      try {
-        const res = await resetPassword(password);
-        console.log("res is:", res);
-        if (res.status === "error" && res.error.message) {
-          console.log("res.error.message is:", res.error.message);
-          setWarning(res.error.message);
-          return;
-        }
-        
-      } catch (err) {
-        setWarning(err.message);
-      }
-    }
-  
     return (
-      //  without the container fluid the bottom and horizontal scroll bar will appear
-      //  the min-h-screen is to make the page full height
-      <Container fluid className="min-h-screen"> 
-        <Row className="min-h-screen">
-          <Col xs={12} md={6} lg={6} xl={6} xxl={6}>
-          <div className='w-10/12 justify-center items-center px-20'>
-            <div>
-              <div  className='font-bold'><h2 className='text-xl text-center'></h2><h3 className='font-semibold text-lg text-center'>Enter New Password</h3></div>
-            <br />
-            <Form onSubmit={handleSubmit}>
-              <Form.Group>
-                <Form.Label className='text-sm font-semibold'>Password:</Form.Label><Form.Control type="password" value={password} id="password" name="password" onChange={(e) => setPassword(e.target.value)} />
-                {/* <Form.Label>Password:</Form.Label><Form.Control type="password" value={password} id="password" name="password" onChange={(e) => setPassword(e.target.value)}/> */}
-              </Form.Group>
-              <br />
-              
-              <Button variant="primary" type="submit" className="w-full mt-4 py-2 text-black">Change Password</Button>
-            </Form>  
-            </div>
-            </div>
-          </Col>
-  
-          
-        </Row>
-      </Container>
-    );
+      <Suspense>
+        <GetQuery/>
+      </Suspense>
+    )
+    
 }

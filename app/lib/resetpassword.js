@@ -20,13 +20,18 @@ export async function initiatePasswordReset(email) {
             const responseData = await response.json();
             if (response.ok) {
                 console.log(`User found and the res is ${responseData.stringify}`);
+                return true;
                 
             } else {
                 console.log('User not found', responseData);
+                return false;
             }
+           
         }
          catch (error) {
             console.error('Error initiating password reset', error);
+            return false;
+            
         }
         
     
