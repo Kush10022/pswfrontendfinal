@@ -7,12 +7,15 @@ import { Button } from 'react-bootstrap';
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
   async function handleSubmit(e) {
+
     e.preventDefault();
     const payload = {
       email: email,
@@ -28,6 +31,7 @@ export default function Login() {
       });
       const responseData = await response.json();
       if (response.ok) {
+        router.push('/dashboard');
         console.log('User login successful', responseData);
       } else {
         console.log('User login failed', responseData);
