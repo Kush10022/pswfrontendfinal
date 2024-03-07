@@ -9,25 +9,23 @@ on:
     branches:
       - main
       - verfyemail
+
   push:
     branches:
       - main
       - verfyemail
 # workflow can have many jobs
 jobs:
-
   #id of our jobs
   run-tests:
-
     #name displayed in Github GUI
-    name: Lint and Test
+    name: Test for login page
 
     #type of machine to run the job on
     runs-on: ubuntu-latest
 
     # job contains a sequence of tasks called steps
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v3
 
