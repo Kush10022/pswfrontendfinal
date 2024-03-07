@@ -20,8 +20,6 @@ export async function registerUsers(email, password, firstName, lastName, PSW) {
             body: JSON.stringify( payload)
         });
         const responseData = await response.json();
-        //const responseData = await response.text();
-        //console.log(responseData);
         if (response.ok) {
             console.log('User registration successful', responseData);
             return responseData;

@@ -1,6 +1,4 @@
 
-
-
 export async function resetPassword(token, newPassword) {
     const url = 'https://tired-rose-sockeye.cyclic.app/v1/auth/passwordreset';
     const body = JSON.stringify({ token, password: newPassword });
