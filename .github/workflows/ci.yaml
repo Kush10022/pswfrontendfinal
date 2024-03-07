@@ -1,0 +1,43 @@
+# "ci" for "continuous integration" and the ".yaml" extension for a "yaml" file: "
+# think of yaml as opposite to json
+# workflow name
+name: CI
+
+#event to trigger workflow
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+# workflow can have many jobs
+jobs:
+
+  #id of our jobs
+  run-tests:
+
+    #name displayed in Github GUI
+    name: Lint and Test
+
+    #type of machine to run the job on
+    runs-on: ubuntu-latest
+
+    # job contains a sequence of tasks called steps
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+    #name: Checkout code, uses: actions/checkout@v3: 
+    #This defines the first step of our job, named "Checkout code". 
+    #It uses the "Checkout V3" Action, which: "checks-out your repository under $GITHUB_WORKSPACE, so your workflow can access it."
+      - name: Install packages
+        run: npm ci
+
+    # run the tests
+      - name: Run tests
+        run: npm run test
+
+
