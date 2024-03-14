@@ -9,11 +9,22 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import { useRouter } from "next/navigation";
 
+export function getToken() {
+  try {
+    return localStorage.getItem('access_token');
+  } catch (err) {
+    return null;
+  }
+}
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
+  function setToken(token) {
+    localStorage.setItem('access_token', token);
+  }
   async function handleSubmit(e) {
 
     e.preventDefault();
@@ -22,15 +33,17 @@ export default function Login() {
       password: password
     }
     try{
-      const response = await fetch('https://tired-rose-sockeye.cyclic.app/v1/auth/login', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload)
       });
+      console.log('response', response);
       const responseData = await response.json();
       if (response.ok) {
+        setToken(responseData.token);
         router.push('/dashboard');
         console.log('User login successful', responseData);
       } else {
