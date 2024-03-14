@@ -59,14 +59,28 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="mt-5">
-            <h2 className="text-lg leading-6 font-medium text-gray-900">Geolocation</h2>
-            {/* Placeholder for geolocation feature */}
+          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="px-4 py-5 sm:px-6">
+              <h2 className="text-lg leading-6 font-medium text-gray-900">Geo-Location</h2>
+              {/* Placeholder for upcoming bookings */}
+            </div>
+            <div className="border-t border-gray-200">
+              <dl>
+                {/* Booking details */}
+              </dl>
+            </div>
           </div>
 
-          <div className="mt-5">
-            <h2 className="text-lg leading-6 font-medium text-gray-900">Booking Images</h2>
-            {/* Add images as needed */}
+          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="px-4 py-5 sm:px-6">
+              <h2 className="text-lg leading-6 font-medium text-gray-900">Payment Info</h2>
+              {/* Placeholder for upcoming bookings */}
+            </div>
+            <div className="border-t border-gray-200">
+              <dl>
+                {/* Booking details */}
+              </dl>
+            </div>
           </div>
         </div>
       </div>
