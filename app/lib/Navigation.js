@@ -6,7 +6,7 @@ import LoggedOutNav from './LoggedOutNav';
 
 export default function Navigation() {
   const pathname = usePathname();
-  if(pathname === '/login' || pathname === '/registeruser' || pathname === '/'){
+  if(pathname === '/login' || pathname === '/registeruser' || pathname === '/' || pathname === '/resetpassword' || pathname === '/afterEmailregister'){
     return <LoggedOutNav />
   }
   else{

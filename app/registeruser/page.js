@@ -23,7 +23,7 @@ export default function Register() {
         setWarning(res.error.message);
         return;
       }
-      router.push("/login");
+      router.push("/afterEmailregister");
     } catch (err) {
       setWarning(err.message);
     }
