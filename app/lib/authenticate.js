@@ -12,7 +12,7 @@ export async function registerUsers(email, password, firstName, lastName, PSW) {
     try {
         // Modify this URL to the actual endpoint UJ Path
         //http://localhost:8080/v1
-        const response = await fetch('https://tired-rose-sockeye.cyclic.app/v1/auth/register', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

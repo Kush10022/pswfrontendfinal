@@ -31,7 +31,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 //import userEvent from '@testing-library/user-event';
-import Login from '../app/loginuser/page.js'; // Adjust this import path to where your Login component is located
+import Login from '../app/login/page.js'; // Adjust this import path to where your Login component is located
 //import * as auth from '../app/lib/authenticateUsers'; // Adjust this path to where your authenticateUsers module is located
 
 // Mock the Next.js useRouter hook

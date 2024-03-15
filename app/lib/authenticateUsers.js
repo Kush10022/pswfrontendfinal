@@ -5,7 +5,7 @@ export async function loginUsers(email, password){
     }
 
     try{
-        const response = await fetch('https://tired-rose-sockeye.cyclic.app/v1/auth/login', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -115,7 +115,7 @@ const VerifyEmail = () => {
         async function retrieveSendToken() {
             try {
                 if (token) {
-                    const response = await fetch(`https://tired-rose-sockeye.cyclic.app/v1/auth/verifyemail`, {
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/verifyemail`, {
                         method: 'PATCH',
                         headers: {
                             'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ const VerifyEmail = () => {
                     if (response.ok) {
                         const responseData = await response.json();
                         console.log("response is ", responseData);
-                        router.push("/loginuser");
+                        router.push("/login");
                     } else {
                         setStatusMessage('Failed to verify email. Please register again.');
                     }

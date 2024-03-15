@@ -21,7 +21,7 @@ export default function Newpassword(){
           setWarning(res.error.message);
           return;
         }
-        
+                
       } catch (err) {
         setWarning(err.message);
       }
@@ -43,14 +43,11 @@ export default function Newpassword(){
                 {/* <Form.Label>Password:</Form.Label><Form.Control type="password" value={password} id="password" name="password" onChange={(e) => setPassword(e.target.value)}/> */}
               </Form.Group>
               <br />
-              
               <Button variant="primary" type="submit" className="w-full mt-4 py-2 text-black">Change Password</Button>
             </Form>  
             </div>
             </div>
           </Col>
-  
-          
         </Row>
       </Container>
     );
