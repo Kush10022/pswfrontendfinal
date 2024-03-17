@@ -1,0 +1,59 @@
+.profileContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+  }
+  
+  .profileRow {
+    justify-content: center;
+  }
+  
+  .imageColumn {
+    text-align: center;
+  
+  }
+  
+  .infoColumn {
+    text-align: center;
+  }
+  
+  .imageContainer {
+    width: 250px; /* Adjust width for larger profile picture */
+    height: 250px; /* Adjust height for larger profile picture */
+    overflow: hidden;
+    border-radius: 50%;
+    margin-bottom: 20px; /* Add margin to separate profile picture and user information */
+   
+  }
+
+  .bookingInfo{
+
+    font-size: 50px;
+    font-weight: bold;
+    
+
+  }
+
+  .profileImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .userInfo {
+    font-size: 20px; /* Adjust font size as needed */
+    margin-right: 20px;
+  }
+  
+  .greyText {
+    color: grey;
+  }
+
+  .smlRadius {
+
+    width: 50px;
+    height: 40px;
+    border-radius: 50%;
+  }
