@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 
 import { useRouter } from "next/navigation";
 import { Container, Row, Col, Card } from "react-bootstrap";
-import styles from "../../styling/Profile.module.css";
+import styles from "../../styling/profile.module.css";
 
 export let imgURL;
 

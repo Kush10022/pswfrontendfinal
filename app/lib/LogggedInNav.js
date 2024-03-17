@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { UserCircleIcon } from '@heroicons/react/24/solid';
 import { imgURL } from '../profile/page';
-import styles from "../../styling/Profile.module.css";
+import styles from "../../styling/profile.module.css";
 
 export default function LoggedInNav() {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
