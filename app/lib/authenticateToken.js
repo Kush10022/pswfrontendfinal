@@ -2,7 +2,7 @@
 export async function validatePasswordResetToken(token) {
     try {
        
-        const url = `https://tired-rose-sockeye.cyclic.app/v1/auth/passwordreset?token=${token}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}/v1/auth/passwordreset?token=${token}`;
         const response = await fetch(url, {
             method: 'GET',
             headers: {

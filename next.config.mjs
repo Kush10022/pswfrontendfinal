@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+//if reactStrictMode: false then will run once . By default its true
+const nextConfig = {
+    // reactStrictMode: false
+};
 
 export default nextConfig;

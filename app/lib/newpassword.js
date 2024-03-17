@@ -1,11 +1,12 @@
 import axios from 'axios';
 
 export async function newPasswordResetting(token, password) {
-    const url = 'https://tired-rose-sockeye.cyclic.app/v1/auth/passwordreset';
+    const url =  `${process.env.NEXT_PUBLIC_API_URL}/v1/auth/passwordreset`;
     const payload = {
         "token": token,
         "password": password,
     }
+
     try {
 
     const response = await fetch('https://tired-rose-sockeye.cyclic.app/v1/auth/passwordreset', {
