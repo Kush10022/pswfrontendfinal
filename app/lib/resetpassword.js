@@ -9,7 +9,7 @@ export async function initiatePasswordReset(email) {
 
         try {
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/passwordreset}`,{
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/passwordreset`,{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
