@@ -1,4 +1,4 @@
-import axios from 'axios';
+
 
 export async function newPasswordResetting(token, password) {
     const url =  `${process.env.NEXT_PUBLIC_API_URL}/v1/auth/passwordreset`;
