@@ -41,19 +41,19 @@ export default function Register() {
           <br />
           <Form onSubmit={handleSubmit}>
             <Form.Group>
-              <Form.Label className='text-sm font-semibold'>First Name</Form.Label><Form.Control type="string" value={firstName} id="fname" name="fname" onChange={(e) => setFirstName(e.target.value)} />
+              <Form.Label htmlFor="fname" className='text-sm font-semibold'>First Name</Form.Label><Form.Control type="string" value={firstName} id="fname" name="fname" onChange={(e) => setFirstName(e.target.value)} />
             </Form.Group>
             <br />
             <Form.Group>
-              <Form.Label className='text-sm font-semibold'>Last Name</Form.Label><Form.Control type="string" value={lastName} id="lname" name="lname" onChange={(e) => setLastName(e.target.value)} />
+              <Form.Label htmlFor="lname" className='text-sm font-semibold'>Last Name</Form.Label><Form.Control type="string" value={lastName} id="lname" name="lname" onChange={(e) => setLastName(e.target.value)} />
             </Form.Group>
             <br />
             <Form.Group>
-              <Form.Label className='text-sm font-semibold'>Email:</Form.Label><Form.Control type="email" value={email} id="useremail" name="useremail" onChange={(e) => setEmail(e.target.value)} />
+              <Form.Label htmlFor="useremail" className='text-sm font-semibold'>Email:</Form.Label><Form.Control type="email" value={email} id="useremail" name="useremail" onChange={(e) => setEmail(e.target.value)} />
             </Form.Group>
             <br />
             <Form.Group>
-              <Form.Label className='text-sm font-semibold'>Password:</Form.Label><Form.Control type="password" value={password} id="password" name="password" onChange={(e) => setPassword(e.target.value)} />
+              <Form.Label htmlFor="password" className='text-sm font-semibold'>Password:</Form.Label><Form.Control type="password" value={password} id="password" name="password" onChange={(e) => setPassword(e.target.value)} />
               {/* <Form.Label>Password:</Form.Label><Form.Control type="password" value={password} id="password" name="password" onChange={(e) => setPassword(e.target.value)}/> */}
             </Form.Group>
             <br />

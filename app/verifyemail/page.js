@@ -125,7 +125,7 @@ const VerifyEmail = () => {
 
                     if (response.ok) {
                         const responseData = await response.json();
-                        console.log("response is ", responseData);
+                        console.log(`response is ", ${responseData}`);
                         router.push("/login");
                     } else {
                         setStatusMessage('Failed to verify email. Please register again.');
@@ -137,7 +137,7 @@ const VerifyEmail = () => {
         }
 
         retrieveSendToken();
-    }, [token, router]);
+    }, [token]);
 
     return <div>{statusMessage}</div>;
 };
