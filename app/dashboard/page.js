@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+
 const Dashboard = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
@@ -50,5 +51,4 @@ const Dashboard = () => {
     </div>
   );
 };
-
 export default Dashboard;
