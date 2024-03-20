@@ -30,7 +30,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom'; //without this line, the toBeInTheDocument() method will not work
-//import userEvent from '@testing-library/user-event';
 import Login from '../app/login/page.js'; // Adjust this import path to where your Login component is located
 
 // Mock the Next.js useRouter hook

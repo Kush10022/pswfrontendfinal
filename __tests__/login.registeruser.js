@@ -38,16 +38,16 @@ describe('Register Page', () => {
     fireEvent.change(firstNameInput, { target: { value: 'John' } });
     expect(firstNameInput.value).toBe('John');
 
-    // const lastNameInput = getByLabelText(/Last Name/i);
-    // fireEvent.change(lastNameInput, { target: { value: 'Doe' } });
-    // expect(lastNameInput.value).toBe('Doe');
+    const lastNameInput = getByLabelText(/Last Name/i);
+    fireEvent.change(lastNameInput, { target: { value: 'Doe' } });
+    expect(lastNameInput.value).toBe('Doe');
 
-    // const emailInput = getByLabelText(/Email:/i);
-    // fireEvent.change(emailInput, { target: { value: 'john.doe@example.com' } });
-    // expect(emailInput.value).toBe('john.doe@example.com');
+    const emailInput = getByLabelText(/Email:/i);
+    fireEvent.change(emailInput, { target: { value: 'john.doe@example.com' } });
+    expect(emailInput.value).toBe('john.doe@example.com');
 
-    // const passwordInput = getByLabelText(/Password:/i);
-    // fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    // expect(passwordInput.value).toBe('password123');
+    const passwordInput = getByLabelText(/Password:/i);
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    expect(passwordInput.value).toBe('password123');
   });
 });

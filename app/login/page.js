@@ -9,18 +9,11 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import { useRouter } from "next/navigation";
 
-export function getToken() {
-  try {
-    return localStorage.getItem('access_token');
-  } catch (err) {
-    return null;
-  }
-}
-
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const [StatusMessage, setStatusMessage] = useState("");
 
   function setToken(token) {
     localStorage.setItem('access_token', token);
@@ -42,11 +35,18 @@ export default function Login() {
       });
       console.log('response', response);
       const responseData = await response.json();
-      if (response.ok) {
+
+      if(response.status === 403){
+        setStatusMessage("Please verify your email before logging in or check your email for verification link.")
+      }
+
+      else if (response.ok) {
         setToken(responseData.token);
+
         router.push('/dashboard');
         console.log('User login successful', responseData);
       } else {
+        setStatusMessage("Please enter a valid email and password")
         console.log('User login failed', responseData);
       }
     }catch
@@ -79,8 +79,7 @@ export default function Login() {
                 onChange={e => setPassword(e.target.value)}
                 />
                 <div className={styles.rememberMe}>
-                  <input type="checkbox" id="rememberMe" />
-                  <label htmlFor="rememberMe">Remember me</label>
+                  {StatusMessage && <p className={styles.error} >{StatusMessage}</p>}
                 </div>
                 <Link href="/resetPassword" className={styles.forgotPassword}>Forgot password</Link>
                 {/* <Link href="#"> */}
