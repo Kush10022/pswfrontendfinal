@@ -1,5 +1,7 @@
 "use client";
 import React, { useState } from 'react';
+import withAuth from '../utils/routeGuard';
+
 const Dashboard = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
@@ -50,5 +52,4 @@ const Dashboard = () => {
     </div>
   );
 };
-
-export default Dashboard;
+export default withAuth(Dashboard);
