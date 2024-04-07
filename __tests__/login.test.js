@@ -32,7 +32,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom'; //without this line, the toBeInTheDocument() method will not work
 import Login from '../app/login/page.js'; // Adjust this import path to where your Login component is located
 import { useRouter } from "next/navigation";
-
+import { AssitiveFetch} from '../app/lib/assitivefetch.js'; // Adjust this import path to where your AssitiveFetch function is located
 
 
 // Mock the Next.js useRouter hook
@@ -45,8 +45,24 @@ jest.mock('next/navigation', () => ({
 }));
 
 
+// Mock AssitiveFetch to simulate a failed login attempt
+// Assuming AssitiveFetch is exported from '../lib/assitivefetch'
+jest.mock('../app/lib/assitivefetch', () => ({
+  AssitiveFetch: jest.fn(),
+}));
+
 // Test for static content: "PSW Support and Care" heading
 describe('Login Component', () => {
+
+  beforeEach(() => {
+    // Reset mocks before each test
+    jest.clearAllMocks();
+
+    AssitiveFetch.mockResolvedValue({
+      status: 403, // Example status code for a failed login
+    });
+  });
+
 
   // Test for static content: "PSW Support and Care" heading
   test('renders PSW Support and Care heading', () => {
@@ -54,8 +70,33 @@ describe('Login Component', () => {
     const headingElement = screen.getByText(/PSW Support and Care/i);
     expect(headingElement).toBeInTheDocument();
   });
+  
+
+  test('displays error message on wrong username and password', async () => {
+    render(<Login />);
+
+    // Simulate user input for the username and password fields
+    fireEvent.change(screen.getByPlaceholderText(/Email Address/i), {
+      target: { value: 'wrong@example.com' }
+    });
+    fireEvent.change(screen.getByPlaceholderText(/Password/i), {
+      target: { value: 'wrongPassword' }
+    });
+
+    // Simulate form submission
+    fireEvent.click(screen.getByTestId('login-button'));
 
 
+
+    // Wait for AssitiveFetch to be called
+    await waitFor(() => expect(AssitiveFetch).toHaveBeenCalled());
+
+    // Now check if AssitiveFetch was called with the expected 403 status
+    // This part assumes AssitiveFetch returns a promise that resolves with an object containing the status code
+    expect(AssitiveFetch).toHaveReturnedWith(expect.objectContaining({
+      status: 403
+    }));
+  })
   
   // test('displays error message on 403 Forbidden response', async () => {
   //   // Mock fetch to simulate 403 Forbidden response
@@ -78,45 +119,3 @@ describe('Login Component', () => {
   // });
 
 })
-
-// Test for the login form
-// describe('Login Component', () => {
-//   test('redirects to dashboard on successful login', async () => {
-//     // render(<Login onSubmit={onSubmit}/>);
-  
-//     // Simulate user input
-//     // fireEvent.change(screen.getByPlaceholderText('Email Address'), {
-//     //   target: { value: 'tsumiksh@gmail.com' },
-//     // });
-//     // fireEvent.change(screen.getByPlaceholderText('Password'), {
-//     //   target: { value: 'ss' },
-//     // });
-
-//     const mockSubmit = jest.fn();
-//     render(<Login onSubmit={mockSubmit} />);
-
-//     fireEvent.change(screen.getByPlaceholderText('Email Address'), {
-//       target: { value: 'testuser' },
-//     });
-//     fireEvent.change(screen.getByPlaceholderText('Password'), {
-//       target: { value: 'testpass' },
-//     });
-    
-//     fireEvent.submit(screen.getByRole('form'));
-
-//     // Assertions
-//     await waitFor(() => {
-//       // expect(mockSubmit).toHaveBeenCalledTimes(1);
-//       expect(mockSubmit).toHaveBeenCalledWith('testuser', 'testpass');
-//     });
-//     // // Simulate form submission
-//     // fireEvent.click(screen.getByRole('button', { name: 'Login' }));
-  
-//     // const geoLocationHeading = await screen.findByRole('heading', {
-//     //   name: /Geo-Location/i,
-//     // });
-  
-//     // // Assert that the heading is in the document
-//     // expect(geoLocationHeading).toBeInTheDocument();
-//   });
-// });
