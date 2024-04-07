@@ -8,9 +8,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import { useRouter } from "next/navigation";
+import { AssitiveFetch } from "../lib/assitivefetch";
 
-
-export default function Login() {
+export default function Login({onSubmit}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
@@ -34,25 +34,27 @@ export default function Login() {
   async function handleSubmit(e) {
 
     e.preventDefault();
+    
     const payload = {
       email: email,
       password: password
     }
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload)
-      });
-      // console.log('response', response);
-      const responseData = await response.json();
 
-      if (response.status === 403) {
+    try {
+      // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/login`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(payload)
+      // });
+      // console.log('response', response);
+      const responseData = await AssitiveFetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/login`, 'POST', payload);
+      console.log(`response status is ${responseData.status}`)
+      if (responseData.status === 403) {
         setStatusMessage("Please verify your email before logging in or check your email for verification link.")
       }
-      else if (response.ok) {
+      else if (responseData.status === 'ok') {
         // setToken(responseData.token);
         setCookie('authToken', responseData.token, 24); // Sets a cookie named 'authToken' with the token value, expiring in 24 hours.
         router.push('/dashboard');
@@ -77,7 +79,7 @@ export default function Login() {
               <p>Welcome Back, Please login to your account.</p>
               <button className={styles.githubBtn}>Login with Google</button>
               <div className={styles.orSeparator}>- OR -</div>
-              <form className={styles.loginForm} onSubmit={handleSubmit}>
+              <form className={styles.loginForm} onSubmit={handleSubmit}   role="form" data-testid="form-button">
                 <input type="email"
                   placeholder="Email Address"
                   required

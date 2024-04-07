@@ -14,7 +14,7 @@ export default function EmailReviewer() {
   }, [router]);
 
   return (
-    <div>
+    <div className="font-semibold text-center text-green-700 mr-8 mt-10">
       You have received an email to verify.
     </div>
   );

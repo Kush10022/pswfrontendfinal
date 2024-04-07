@@ -22,7 +22,7 @@ export default function LoggedInNav() {
         <a href="dashboard" className="py-4 px-2 text-slate-50 font-semibold hover:text-green-500 transition duration-300">Home</a>
         <a href="services" className="py-4 px-2 text-slate-50 font-semibold hover:text-green-500 transition duration-300">Services</a>
         <a href="#" className="py-4 px-2 text-slate-50 font-semibold hover:text-green-500 transition duration-300">About</a>
-        <a href="#" className="py-4 px-2 text-slate-50 font-semibold hover:text-green-500 transition duration-300">Contact Us</a>
+        <a href="contact" className="py-4 px-2 text-slate-50 font-semibold hover:text-green-500 transition duration-300">Contact Us</a>
       </div>
       {/* Search input and Profile dropdown */}
       <div className="flex items-center space-x-4">

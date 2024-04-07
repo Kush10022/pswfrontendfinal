@@ -29,6 +29,7 @@ export const config = {
 
     //when paths increase change to this array
     matcher: ['/dashboard/:path*', '/profile/:path*', '/newpassword/:path*', '/resetPassword/:path*', '/passwordreset/:path*'],
-
+    //'/verifyEmail/:path*'
+    //afterEmailregister/:path*'
     //matcher: '/dashboard/:path*',
 }
