@@ -1,54 +1,67 @@
-"use client";
-import React, { useState } from 'react';
+import React from 'react';
+import { FaMapMarkerAlt, FaCreditCard, FaCalendarAlt } from 'react-icons/fa'; // Make sure to have 'react-icons' package installed
 
-const Dashboard = () => {
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+const ServicePage = () => {
+  // Assume these have been fetched or are props
+  const upcomingBookings = [
+    { id: 1, service: 'Home Cleaning', date: '2024-06-21', time: '10:00 AM' },
+    // ...more bookings
+  ];
 
-  const toggleDropdown = () => setDropdownOpen(!isDropdownOpen);
   return (
-    <div className="min-h-screen bg-gray-100">
-
-      <div className="py-5">
-        <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
-          {/* Content goes here */}
-          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div className="px-4 py-5 sm:px-6">
-              <h2 className="text-lg leading-6 font-medium text-gray-900">Upcoming Bookings</h2>
-              {/* Placeholder for upcoming bookings */}
-            </div>
-            <div className="border-t border-gray-200">
-              <dl>
-                {/* Booking details */}
-              </dl>
-            </div>
+    <div className="font-sans bg-gray-100 p-8">
+      {/* Main Container */}
+      <div className="flex flex-col md:flex-row md:flex-wrap md:justify-center gap-6">
+        
+        {/* Upcoming Bookings */}
+        <div className="bg-white rounded-lg shadow p-4 w-full md:w-1/2 lg:w-1/3">
+          <div className="p-6">
+            <h3 className="flex items-center mb-3 text-xl font-semibold">
+              <FaCalendarAlt className="mr-2" /> Upcoming Bookings
+            </h3>
+            {upcomingBookings.map((booking) => (
+              <div key={booking.id} className="mb-2">
+                <p className="font-semibold">{booking.service}</p>
+                <p className="text-sm">{booking.date} at {booking.time}</p>
+              </div>
+            ))}
           </div>
-
-          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div className="px-4 py-5 sm:px-6">
-              <h2 className="text-lg leading-6 font-medium text-gray-900">Geo-Location</h2>
-              {/* Placeholder for upcoming bookings */}
-            </div>
-            <div className="border-t border-gray-200">
-              <dl>
-                {/* Booking details */}
-              </dl>
-            </div>
-          </div>
-
-          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div className="px-4 py-5 sm:px-6">
-              <h2 className="text-lg leading-6 font-medium text-gray-900">Payment Info</h2>
-              {/* Placeholder for upcoming bookings */}
-            </div>
-            <div className="border-t border-gray-200">
-              <dl>
-                {/* Booking details */}
-              </dl>
-            </div>
+          <div className="bg-green-100 p-4 text-center">
+            <a href="/bookings" className="text-green-600 hover:underline">View all bookings</a>
           </div>
         </div>
+        
+        {/* Geo-Location */}
+        <div className="bg-white rounded-lg shadow p-4 w-full md:w-1/2 lg:w-1/3">
+          <div className="p-6">
+            <h3 className="flex items-center mb-3 text-xl font-semibold">
+              <FaMapMarkerAlt className="mr-2" /> Geo-Location
+            </h3>
+            <p className="text-sm">123 Main St, Anytown, AN 12345</p>
+          </div>
+          <div className="bg-green-100 p-4 text-center">
+            <a href="/location" className="text-green-600 hover:underline">Update location</a>
+          </div>
+        </div>
+
+        {/* Payment Info */}
+        <div className="bg-white rounded-lg shadow p-4 w-full md:w-1/2 lg:w-1/3">
+          <div className="p-6">
+            <h3 className="flex items-center mb-3 text-xl font-semibold">
+              <FaCreditCard className="mr-2" /> Payment Info
+            </h3>
+            <p className="text-sm">Visa ending in 1234</p>
+          </div>
+          <div className="bg-green-100 p-4 text-center">
+            <a href="/payment" className="text-green-600 hover:underline">Manage payments</a>
+          </div>
+        </div>
+
+        {/* Additional cards/content can be added here */}
+
       </div>
     </div>
   );
 };
-export default Dashboard;
+
+export default ServicePage;
