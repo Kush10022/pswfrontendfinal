@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import styles from "../../styling/profile.module.css";
+import Cookie from "js-cookie";
 
 export let imgURL;
 
@@ -17,7 +18,8 @@ export let imgURL;
 
   const retriveImg = async () => {
 
-    const accessToken = localStorage.getItem('access_token')
+    const accessToken = Cookie.get('authToken');
+    console.log(accessToken)
 
     if (!accessToken) {
       console.log("I didnt find access token!!!")
@@ -56,7 +58,7 @@ export let imgURL;
 
   const retriveUser = async () => {
 
-    const accessToken = localStorage.getItem('access_token')
+    const accessToken = Cookie.get('authToken');
 
     if (!accessToken) {
       console.log("I didnt find access token!!!")

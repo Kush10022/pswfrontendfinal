@@ -28,7 +28,7 @@ export function middleware(request) {
 export const config = {
 
     //when paths increase change to this array
-    matcher: ['/dashboard/:path*', '/profile/:path*', '/newpassword/:path*', '/resetPassword/:path*', '/passwordreset/:path*'],
+    matcher: ['/dashboard/:path*', '/profile/:path*', '/newpassword/:path*', '/resetPassword/:path*', '/passwordreset/:path*','/about/:path*', '/services/:path*', '/contact/:path*'],
     //'/verifyEmail/:path*'
     //afterEmailregister/:path*'
     //matcher: '/dashboard/:path*',
