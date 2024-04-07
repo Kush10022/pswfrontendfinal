@@ -19,8 +19,8 @@ export default function LoggedInNav() {
       </a>
       {/* Primary Navbar items */}
       <div className="hidden md:flex items-center space-x-1">
-        <a href="#" className="py-4 px-2 text-slate-50 font-semibold hover:text-green-500 transition duration-300">Home</a>
-        <a href="#" className="py-4 px-2 text-slate-50 font-semibold hover:text-green-500 transition duration-300">Services</a>
+        <a href="dashboard" className="py-4 px-2 text-slate-50 font-semibold hover:text-green-500 transition duration-300">Home</a>
+        <a href="services" className="py-4 px-2 text-slate-50 font-semibold hover:text-green-500 transition duration-300">Services</a>
         <a href="#" className="py-4 px-2 text-slate-50 font-semibold hover:text-green-500 transition duration-300">About</a>
         <a href="#" className="py-4 px-2 text-slate-50 font-semibold hover:text-green-500 transition duration-300">Contact Us</a>
       </div>
@@ -39,7 +39,7 @@ export default function LoggedInNav() {
             <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex="-1">
               <div className="py-1" role="none">
                 <a href="\profile" className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabIndex="-1" id="menu-item-0">My Profile</a>
-                <a href="#" className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabIndex="-1" id="menu-item-1">Logout</a>
+                <a href="logout" className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabIndex="-1" id="menu-item-1">Logout</a>
                 <a href="#" className="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabIndex="-1" id="menu-item-2">Account History</a>
               </div>
             </div>

@@ -2,53 +2,58 @@
 import React, { useState } from 'react';
 
 const Dashboard = () => {
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  // const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-  const toggleDropdown = () => setDropdownOpen(!isDropdownOpen);
+  // const toggleDropdown = () => setDropdownOpen(!isDropdownOpen);
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="font-sans">
+      {/* Hero Section */}
+      <div className="bg-blue-600 text-white text-center p-12">
+        <h1 className="text-4xl font-bold mb-2">Welcome to PSW Services</h1>
+        <p className="text-xl">Dedicated to providing top-notch personal support services</p>
+      </div>
 
-      <div className="py-5">
-        <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
-          {/* Content goes here */}
-          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div className="px-4 py-5 sm:px-6">
-              <h2 className="text-lg leading-6 font-medium text-gray-900">Upcoming Bookings</h2>
-              {/* Placeholder for upcoming bookings */}
-            </div>
-            <div className="border-t border-gray-200">
-              <dl>
-                {/* Booking details */}
-              </dl>
-            </div>
-          </div>
-
-          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div className="px-4 py-5 sm:px-6">
-              <h2 className="text-lg leading-6 font-medium text-gray-900">Geo-Location</h2>
-              {/* Placeholder for upcoming bookings */}
-            </div>
-            <div className="border-t border-gray-200">
-              <dl>
-                {/* Booking details */}
-              </dl>
-            </div>
-          </div>
-
-          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div className="px-4 py-5 sm:px-6">
-              <h2 className="text-lg leading-6 font-medium text-gray-900">Payment Info</h2>
-              {/* Placeholder for upcoming bookings */}
-            </div>
-            <div className="border-t border-gray-200">
-              <dl>
-                {/* Booking details */}
-              </dl>
-            </div>
+      {/* Services Section */}
+      <div className="py-8 px-4">
+        <h2 className="text-3xl font-semibold text-center mb-6">Our Services</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Repeat this block for each service */}
+          <div className="border rounded-lg p-4 shadow">
+            <h3 className="text-xl font-semibold">Service Name</h3>
+            <p className="text-md mt-2">Description of the service...</p>
           </div>
         </div>
       </div>
+
+      {/* About PSWs Section */}
+      <div className="bg-gray-100 py-8 px-4">
+        <h2 className="text-3xl font-semibold text-center mb-6">About PSWs</h2>
+        <p className="max-w-4xl mx-auto text-center">
+          Information on Personal Support Workers, their training, qualifications, and the essential role they play in healthcare.
+        </p>
+      </div>
+
+      {/* Contact Section */}
+      <div className="py-8 px-4">
+        <h2 className="text-3xl font-semibold text-center mb-6">Contact Us</h2>
+        <form className="max-w-xl mx-auto">
+          <div className="mb-4">
+            <label htmlFor="name" className="block text-sm font-semibold">Name</label>
+            <input type="text" id="name" className="w-full border rounded p-2"/>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-sm font-semibold">Email</label>
+            <input type="email" id="email" className="w-full border rounded p-2"/>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="message" className="block text-sm font-semibold">Message</label>
+            <textarea id="message" rows="4" className="w-full border rounded p-2"></textarea>
+          </div>
+          <button type="submit" className="bg-blue-600 text-white rounded p-2 w-full">Submit</button>
+        </form>
+      </div>
     </div>
+    // <p> welcome to home page</p>
   );
 };
 export default Dashboard;
