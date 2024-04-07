@@ -84,6 +84,9 @@
   cursor: pointer;
   font-weight: bold;
 }
+.rememberMe{
+  color : red
+}
 
 .loginForm button[type="submit"] {
   background-color: #007bff;
