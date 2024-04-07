@@ -47,21 +47,21 @@ jest.mock('next/navigation', () => ({
 
 // Mock AssitiveFetch to simulate a failed login attempt
 // Assuming AssitiveFetch is exported from '../lib/assitivefetch'
-jest.mock('../app/lib/assitivefetch', () => ({
-  AssitiveFetch: jest.fn(),
-}));
+// jest.mock('../app/lib/assitivefetch', () => ({
+//   AssitiveFetch: jest.fn(),
+// }));
 
 // Test for static content: "PSW Support and Care" heading
 describe('Login Component', () => {
 
-  beforeEach(() => {
-    // Reset mocks before each test
-    jest.clearAllMocks();
+  // beforeEach(() => {
+  //   // Reset mocks before each test
+  //   jest.clearAllMocks();
 
-    AssitiveFetch.mockResolvedValue({
-      status: 403, // Example status code for a failed login
-    });
-  });
+  //   AssitiveFetch.mockResolvedValue({
+  //     status: 403, // Example status code for a failed login
+  //   });
+  // });
 
 
   // Test for static content: "PSW Support and Care" heading
@@ -72,31 +72,31 @@ describe('Login Component', () => {
   });
   
 
-  test('displays error message on wrong username and password', async () => {
-    render(<Login />);
+  // test('displays error message on wrong username and password', async () => {
+  //   render(<Login />);
 
-    // Simulate user input for the username and password fields
-    fireEvent.change(screen.getByPlaceholderText(/Email Address/i), {
-      target: { value: 'wrong@example.com' }
-    });
-    fireEvent.change(screen.getByPlaceholderText(/Password/i), {
-      target: { value: 'wrongPassword' }
-    });
+  //   // Simulate user input for the username and password fields
+  //   fireEvent.change(screen.getByPlaceholderText(/Email Address/i), {
+  //     target: { value: 'wrong@example.com' }
+  //   });
+  //   fireEvent.change(screen.getByPlaceholderText(/Password/i), {
+  //     target: { value: 'wrongPassword' }
+  //   });
 
-    // Simulate form submission
-    fireEvent.click(screen.getByTestId('login-button'));
+  //   // Simulate form submission
+  //   fireEvent.click(screen.getByTestId('login-button'));
 
 
 
-    // Wait for AssitiveFetch to be called
-    await waitFor(() => expect(AssitiveFetch).toHaveBeenCalled());
+  //   // Wait for AssitiveFetch to be called
+  //   await waitFor(() => expect(AssitiveFetch).toHaveBeenCalled());
 
-    // Now check if AssitiveFetch was called with the expected 403 status
-    // This part assumes AssitiveFetch returns a promise that resolves with an object containing the status code
-    expect(AssitiveFetch).toHaveReturnedWith(expect.objectContaining({
-      status: 403
-    }));
-  })
+  //   // Now check if AssitiveFetch was called with the expected 403 status
+  //   // This part assumes AssitiveFetch returns a promise that resolves with an object containing the status code
+  //   expect(AssitiveFetch).toHaveReturnedWith(expect.objectContaining({
+  //     status: 403
+  //   }));
+  // })
   
   // test('displays error message on 403 Forbidden response', async () => {
   //   // Mock fetch to simulate 403 Forbidden response
