@@ -3,6 +3,7 @@ import { Card, Form, Alert, Button, Container, Row,Col } from "react-bootstrap";
 import { useState } from "react";
 import { registerUsers } from "../lib/authenticate";
 import { useRouter } from "next/navigation";
+import { AssitiveFetch } from "../lib/assitivefetch";
 
 export default function Register() {
   const [warning, setWarning] = useState("");
@@ -57,11 +58,28 @@ export default function Register() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const res = await registerUsers(email, password, firstName, lastName, PSW);
-      console.log("res is:", res);
-      if (res.status === "error" && res.error.message) {
-        console.log("res.error.message is:", res.error.message);
-        setWarning(res.error.message);
+      const payload = {
+        email: email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+        PSW: PSW,
+      };
+
+      const responseData = await AssitiveFetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/register`, 'POST', payload);
+    // if (responseData.status==='ok') {
+    //     console.log('User registration successful', responseData);
+    //     return responseData;
+    // } else {
+    //     console.log('User registration failed', responseData);
+    //     return responseData;
+    // }
+
+      //const res = await registerUsers(email, password, firstName, lastName, PSW);
+      console.log("res is:", responseData);
+      if (responseData.status === "error" && responseData.error.message) {
+        console.log("res.error.message is:", responseData.error.message);
+        setWarning(responseData.error.message);
         return;
       }
       router.push("/afterEmailregister");
@@ -82,19 +100,19 @@ export default function Register() {
           <br />
           <Form onSubmit={handleSubmit}>
             <Form.Group>
-              <Form.Label className='text-sm font-semibold'>First Name</Form.Label><Form.Control type="string" value={firstName} id="fname" name="fname" onChange={(e) => setFirstName(e.target.value)} />
+              <Form.Label htmlFor="fname" className='text-sm font-semibold'>First Name</Form.Label><Form.Control type="string" value={firstName} id="fname" name="fname" onChange={(e) => setFirstName(e.target.value)} />
             </Form.Group>
             <br />
             <Form.Group>
-              <Form.Label className='text-sm font-semibold'>Last Name</Form.Label><Form.Control type="string" value={lastName} id="lname" name="lname" onChange={(e) => setLastName(e.target.value)} />
+              <Form.Label htmlFor="lname" className='text-sm font-semibold'>Last Name</Form.Label><Form.Control type="string" value={lastName} id="lname" name="lname" onChange={(e) => setLastName(e.target.value)} />
             </Form.Group>
             <br />
             <Form.Group>
-              <Form.Label className='text-sm font-semibold'>Email:</Form.Label><Form.Control type="email" value={email} id="useremail" name="useremail" onChange={(e) => setEmail(e.target.value)} />
+              <Form.Label htmlFor="useremail" className='text-sm font-semibold'>Email:</Form.Label><Form.Control type="email" value={email} id="useremail" name="useremail" onChange={(e) => setEmail(e.target.value)} />
             </Form.Group>
             <br />
             <Form.Group>
-              <Form.Label className='text-sm font-semibold'>Password:</Form.Label><Form.Control type="password" value={password} id="password" name="password" onChange={(e) => setPassword(e.target.value)} />
+              <Form.Label htmlFor="password" className='text-sm font-semibold'>Password:</Form.Label><Form.Control type="password" value={password} id="password" name="password" onChange={(e) => setPassword(e.target.value)} />
               {/* <Form.Label>Password:</Form.Label><Form.Control type="password" value={password} id="password" name="password" onChange={(e) => setPassword(e.target.value)}/> */}
             </Form.Group>
             <br />

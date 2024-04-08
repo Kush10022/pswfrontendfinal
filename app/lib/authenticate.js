@@ -1,37 +1,37 @@
-export async function registerUsers(email, password, firstName, lastName, PSW) {
-    // console.log("will send:",email, password, firstName, lastName, PSW);
+// export async function registerUsers(email, password, firstName, lastName, PSW) {
+//     // console.log("will send:",email, password, firstName, lastName, PSW);
 
-    const payload = {
-        email: email,
-        password: password,
-        firstName: firstName,
-        lastName: lastName,
-        PSW: PSW
-    };
+//     const payload = {
+//         email: email,
+//         password: password,
+//         firstName: firstName,
+//         lastName: lastName,
+//         PSW: PSW
+//     };
 
-    try {
-        // Modify this URL to the actual endpoint UJ Path
-        //http://localhost:8080/v1
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify( payload)
-        });
-        const responseData = await response.json();
-        if (response.ok) {
-            console.log('User registration successful', responseData);
-            return responseData;
-        } else {
-            console.log('User registration failed', responseData);
-            return responseData;
-        }
-    } catch (error) {
-        console.error('Error during user registration', error);
-    }
+//     try {
+//         // Modify this URL to the actual endpoint UJ Path
+//         //http://localhost:8080/v1
+//         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/register`, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify( payload)
+//         });
+//         const responseData = await response.json();
+//         if (response.ok) {
+//             console.log('User registration successful', responseData);
+//             return responseData;
+//         } else {
+//             console.log('User registration failed', responseData);
+//             return responseData;
+//         }
+//     } catch (error) {
+//         console.error('Error during user registration', error);
+//     }
 
-}
+// }
 
 
 // In this useEffect, we use an interval to control the character-by-character display and removal of words. Here's a step-by-step breakdown:
