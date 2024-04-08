@@ -13,6 +13,47 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
+  function uploadPicture() {
+    const fileInput = document.getElementById('profilePicture');
+    const tokenInput = document.getElementById('token');
+    if (fileInput.files.length > 0 && tokenInput.value.trim() !== "") {
+        const file = fileInput.files[0];
+        console.log(file);
+        const formData = new FormData();
+        formData.append('picture', file); // 'picture' is the field name you expect on the server
+
+        fetch('http://localhost:9000/v1/private/user/picture', {
+            method: 'PUT',
+            headers: {
+                // 'Content-Type': 'multipart/form-data' is not required here; it's set automatically by the browser when using FormData
+                'Content-Type': `${file.type}`,
+                'Authorization': 'JWT ' + tokenInput.value.trim()
+            },
+            body: file
+        })
+        .then(async (response) => {
+            if (!response.ok) {
+                const resp = await response.json();
+                console.log(resp);
+                throw new Error('Network response was not ok');
+            }
+            return await response.json();
+        })
+        .then(data => {
+            console.log(data);
+            alert('Upload successful');
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Upload failed. See console for details.');
+        });
+    } else {
+        alert('Please select a file and enter a JWT token to upload');
+    }
+}
+
+
+
   async function handleSubmit(e) {
     e.preventDefault();
     try {
