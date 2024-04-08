@@ -97,7 +97,7 @@ export default function Login({onSubmit}) {
                 </div>
                 <Link href="/resetPassword" className={styles.forgotPassword}>Forgot password</Link>
                 {/* <Link href="#"> */}
-                <Button type="submit">Login</Button>
+                <button data-testid="login-button" type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Login</button>
                 {/* </Link> */}
                 <Link href="/registeruser">
                   <Button type="button" >Sign up</Button>
