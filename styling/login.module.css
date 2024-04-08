@@ -10,6 +10,23 @@
   background-color: #f0f0f0; /* Adjust the background color as needed */
 }
 
+.editProfileContainer {
+  background-color: #f8f9fa; /* Set background color */
+}
+
+.editProfileForm {
+  background-color: #fff; /* Set form background color */
+  border-radius: 10px; /* Set border radius */
+  max-width: 600px; /* Set maximum width */
+  width: 100%; /* Set width to 100% */
+  margin-left: auto; /* Center the form horizontally */
+}
+
+.shadow {
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); /* Add 3D shadow */
+}
+
+
 .loginContainer {
   width: 40%;
   background: #ffffff;
