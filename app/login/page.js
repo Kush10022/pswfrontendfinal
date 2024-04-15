@@ -9,13 +9,13 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import { useRouter } from "next/navigation";
 import { AssitiveFetch } from "../lib/assitivefetch";
+import { imgURL } from "../profile/page";
 
 export default function Login({onSubmit}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const [StatusMessage, setStatusMessage] = useState("");
-
 
   // function setToken(token) {
   //   localStorage.setItem('access_token', token);

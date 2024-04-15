@@ -5,11 +5,11 @@ import { userProfileAtom } from '../atoms/userAtom';
 import { useRouter } from "next/navigation";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import styles from "../../styling/profile.module.css";
-
 export let imgURL;
 
  const ProfilePage = () => {
 
+  const imgageprofile = imgURL; 
   const [userProfile, setUserProfile] = useState(null);
   const [, setUserProfileAtom] = useAtom(userProfileAtom);
 
