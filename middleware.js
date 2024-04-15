@@ -8,10 +8,10 @@
 // middleware.js
 import { NextResponse } from 'next/server';
 
-export function middleware(request) {
+export async function middleware (request) {
     // Accessing the cookie named 'authToken'
     const token = request.cookies.get('authToken');
-
+    
     // If no authToken is found and the user is trying to access protected routes
     if (!token && !request.nextUrl.pathname.startsWith('/login')) {
         // Redirect to login page
@@ -28,7 +28,7 @@ export function middleware(request) {
 export const config = {
 
     //when paths increase change to this array
-    matcher: ['/dashboard/:path*', '/profile/:path*', '/newpassword/:path*', '/resetPassword/:path*', '/passwordreset/:path*','/about/:path*', '/services/:path*', '/contact/:path*'],
+    matcher: ['/dashboard/:path*', '/profile/:path*', '/newpassword/:path*', '/passwordreset/:path*','/about/:path*', '/services/:path*', '/contact/:path*'],
     //'/verifyEmail/:path*'
     //afterEmailregister/:path*'
     //matcher: '/dashboard/:path*',
