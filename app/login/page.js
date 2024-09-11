@@ -30,27 +30,16 @@ export default function Login({onSubmit}) {
     document.cookie = name + "=" + (value || "") + expires + "; path=/; Secure; SameSite=Strict";
   }
 
-
   async function handleSubmit(e) {
-
     e.preventDefault();
-    
     const payload = {
       email: email,
       password: password
     }
-
     try {
-      // const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/login`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(payload)
-      // });
-      // console.log('response', response);
+     
       const responseData = await AssitiveFetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/login`, 'POST', payload);
-      console.log(`response status is ${responseData.status}`)
+      
       if (responseData.status === 403) {
         setStatusMessage("Please verify your email before logging in or check your email for verification link.")
       }
@@ -58,17 +47,14 @@ export default function Login({onSubmit}) {
         // setToken(responseData.token);
         setCookie('authToken', responseData.token, 24); // Sets a cookie named 'authToken' with the token value, expiring in 24 hours.
         router.push('/dashboard');
-        // console.log('User login successful', responseData);
       } else {
         setStatusMessage("Please enter a valid email and password")
-        // console.log('User login failed', responseData);
       }
     } catch
     (error) {
       console.error('Error during user login', error);
     }
   }
-
   return (
     <Container fluid>
       <Row>
@@ -109,7 +95,6 @@ export default function Login({onSubmit}) {
             </div>
           </div>
         </Col>
-
         <Col sm={12} md={12} lg={4} xl={4} xxl={4}>
           <div className="flex justify-center items-center h-screen bg-gray-100" >
             <div className="w-3/5 p-8 bg-green-700 rounded-lg text-white text-center relative">

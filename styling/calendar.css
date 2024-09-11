@@ -1,0 +1,75 @@
+/* CalendarStyles.css */
+.calendar-container {
+    margin: 0 auto;
+    max-width: 600px;
+    text-align: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .calendar-heading {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .react-calendar {
+    width: 100%;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  
+  .react-calendar__tile--active {
+    background-color: #00bfa5;
+    color: white;
+  }
+  
+  .react-calendar__tile--active:enabled:hover,
+  .react-calendar__tile--active:enabled:focus {
+    background-color: #00a38f;
+  }
+  
+  .booked-off-heading {
+    font-size: 1.2em;
+    color: #666;
+  }
+  
+  .booked-off-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .booked-off-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    padding: 5px 10px;
+    background-color: #e6f7ff;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .booked-off-item:hover {
+    background-color: #cceeff;
+  }
+  
+  .remove-bookoff-btn {
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .remove-bookoff-btn:hover {
+    background-color: #d9363e;
+  }
+  

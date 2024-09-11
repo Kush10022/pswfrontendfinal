@@ -1,18 +1,19 @@
 "use client";
 import React from 'react';
-import jwt from 'jsonwebtoken';
-import nookies from 'nookies';
-import Cookie from 'js-cookie';
+import Cookies from 'js-cookie';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useAtom } from 'jotai';
+import { userProfileAtom } from '../atoms/userAtom';
 
 // Default export function that returns a page object
 export default function DashboardPage() {
+  // Use the userProfileAtom to get the user's profile data
   const [username, setusername] = useState(null);
-  const getUsernameFromToken = async () => {
-    // Your logic to decode the session token and get the username
-    const token = Cookie.get('authToken');
-    console.log(token);
+  const [userProfile, setUserProfile] = useAtom(userProfileAtom);
+  
+  const getUserObject = async () =>{
+    const token = Cookies.get('authToken');
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/private/user`, {
       method: 'GET',
       headers: {
@@ -20,27 +21,21 @@ export default function DashboardPage() {
       },
     });
     const responseData = await response.json();
-    console.log(responseData);
-    if (response.ok) {
-      console.log('User profile metadata fetched successfully', responseData);
-      setusername(responseData.user.fname);
-    } 
-    else {
-      console.log('Failed to fetch user profile metadata', responseData);
-      throw new Error(responseData.message || 'Failed to fetch user profile metadata');
-    }
-  };
-  
+    setUserProfile(responseData.user);
+  }
+
   useEffect(() => {
-    getUsernameFromToken();
-  }, [])
+    if(userProfile == undefined){
+    getUserObject();
+  }
+  }, []);
 
   return (
     <div className="font-sans">
     {/* Hero Section with Personalized Greeting */}
     <div className="bg-green-600 text-white text-center py-12 px-4">
       <h1 className="text-5xl font-bold mb-3">Welcome to PSW Support Finder</h1>
-      <p className="text-2xl mb-4">Hi, {username || 'Guest'}</p>
+      <p className="text-2xl mb-4">Hi, {userProfile?.fname || 'Guest'}</p>
       <p className="text-lg mt-2 max-w-4xl mx-auto">
         Connecting care seekers with professional Personal Support Workers. 
         Together, we create a community where quality care meets convenience and compassion.
