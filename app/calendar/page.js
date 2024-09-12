@@ -36,10 +36,6 @@ const PswAvailabilityCalendar = () => {
     }
   });
 
-  const [availableDays, setAvailableDays] = useState(
-    userProfile?.calendar?.availableDays || []
-  ); // Available days from backend
-
   // Convert date to a simpler string format (just day, month, year)
   const formatDate = (date) => {
     return date.toISOString().split("T")[0]; // This gives yyyy-mm-dd format without time
@@ -85,6 +81,44 @@ const PswAvailabilityCalendar = () => {
               }
               setBookOffDates(bookedOffDates);
             }
+          }
+        } else {
+          if (userProfile?.calendar?.availableDays) {
+            const availableDays = userProfile?.calendar?.availableDays;
+            const today = new Date();
+            const futureLimit = new Date(
+              today.getFullYear(),
+              today.getMonth() + futureLimitMonths,
+              today.getDate()
+            );
+            let bookedOffDates = [];
+            for (
+              let day = today;
+              day <= futureLimit;
+              day.setDate(day.getDate() + 1)
+            ) {
+              const formattedDate = formatDate(day);
+              if (!availableDays.includes(formattedDate)) {
+                bookedOffDates.push(formattedDate);
+              }
+            }
+            setBookOffDates(bookedOffDates);
+          } else {
+            let bookedOffDates = [];
+            const today = new Date();
+            const futureLimit = new Date(
+              today.getFullYear(),
+              today.getMonth() + futureLimitMonths,
+              today.getDate()
+            );
+            for (
+              let day = today;
+              day <= futureLimit;
+              day.setDate(day.getDate() + 1)
+            ) {
+              bookedOffDates.push(formatDate(day));
+            }
+            setBookOffDates(bookedOffDates);
           }
         }
       } catch (error) {
