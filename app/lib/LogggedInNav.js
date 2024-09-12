@@ -23,7 +23,6 @@ export default function LoggedInNav () {
     });
     const responseData = await response.json();
     setUserProfile(responseData.user);
-    console.log(responseData.user);
   }
 
   useEffect(() => {
