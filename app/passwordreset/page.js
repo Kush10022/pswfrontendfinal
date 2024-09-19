@@ -1,9 +1,4 @@
 "use client";
-
-
-import { useParams } from 'next/navigation'
-import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation';
 import { validatePasswordResetToken } from "../lib/authenticateToken";

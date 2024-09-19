@@ -7,6 +7,5 @@ export async function AssitiveFetch(pathReceived, methodReceived, payloadReceive
         body: JSON.stringify(payloadReceived)
     });
     const responseData = await response.json();
-    console.log('responseData:', responseData);
     return responseData;
 }

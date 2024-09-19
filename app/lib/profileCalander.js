@@ -207,4 +207,4 @@ const AvailabilityCalendar = () => {
   );
 };
 
-export default AvailabilityCalendar;
+export { AvailabilityCalendar };

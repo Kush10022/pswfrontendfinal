@@ -1,5 +1,15 @@
 "use client";
+import React from "react";
+import { useRouter }from "next/navigation";
+import Cookies from "js-cookie";
 export default function Home() {
+
+  const router = useRouter();
+
+  if (Cookies.get("authToken")) {
+    router.push("/dashboard");
+  }
+
   return (
     <div className="relative h-screen bg-cover bg-center" style={{ backgroundImage: "url('/bglanding.jpg')" }}>
       <div className="flex h-full w-full items-center justify-center bg-black bg-opacity-50">
