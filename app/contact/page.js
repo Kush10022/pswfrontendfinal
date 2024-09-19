@@ -1,9 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
-// pages/contact.js
 import { useState } from 'react';
-import Image from 'next/image'
-import generalImage from '../../public/contactpgwimg.jpg';
 import { AssitiveFetch } from '../lib/assitivefetch';
+
 
 export default function Contact() {
     const [formData, setFormData] = useState({

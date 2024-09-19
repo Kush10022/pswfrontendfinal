@@ -9,7 +9,6 @@ const AboutPage = () => {
         { name: 'Harnoor Kaur', role: 'Co-founder & Lead Designer' },
         { name: 'Sumiksh Trehan', role: 'Co-founder & Marketing Director' }
       ];
-    
   return (
     <div className="font-sans bg-gray-100 p-8">
       <div className="max-w-4xl mx-auto space-y-6">
@@ -73,5 +72,4 @@ const AboutPage = () => {
     </div>
   );
 };
-
 export default AboutPage;
