@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 
 export default function LoggedInNav() {
-  const imgURL = "/default-profile.png";
+  const imgURL = "/default-profile.jpg";
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [userProfile, setUserProfile] = useAtom(userProfileAtom);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

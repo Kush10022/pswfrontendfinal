@@ -6,6 +6,7 @@ import { userProfileAtom } from "../atoms/userAtom";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { Modal } from "react-responsive-modal";
+import { SmallMap as DynamicMap } from "./Map";
 import ProfilePictureCard from "../lib/ProfilePictureCard";
 import { ProfilePicUploader } from "../lib/ProfilePicUploader";
 import { PDFViewer } from "../lib/pdfViewer";
@@ -312,16 +313,31 @@ export default function ProfilePage() {
                 onMouseEnter={() => setAddressHover(true)}
                 onMouseLeave={() => setAddressHover(false)}
               >
-                <h3 className="font-bold">Address</h3>
+                <h5 className="font-bold">Address</h5>
                 <p>
                   {user?.address?.address ||
                     "Could you kindly provide your address for client searches?"}
                 </p>
-                <img
-                  src="https://via.placeholder.com/300"
-                  alt="Address Placeholder"
-                  className="mt-2 rounded-md"
-                />
+
+                {user?.address?.location?.coordinates && (
+                  <div className="mt-2 rounded-md w-full sm:w-11/12 md:w-96 lg:w-104 xl:w-128 2xl:w-144 h-64 sm:h-72 md:h-56 lg:h-64 xl:h-72 2xl:h-80">
+                    <DynamicMap
+                      location={{
+                        latitude: user.address.location.coordinates[1],
+                        longitude: user.address.location.coordinates[0],
+                      }}
+                      zoom={17}
+                    />
+                  </div>
+                )}
+
+                {!user?.address?.address && (
+                  <img
+                    src="https://via.placeholder.com/300"
+                    alt="Address Placeholder"
+                    className="mt-2 rounded-md"
+                  />
+                )}
                 {/* Edit button */}
                 {addressHover && (
                   <button className="absolute top-4 right-4 bg-white text-white p-2 shadow-sm border border-gray-200 rounded-full ">
