@@ -21,7 +21,8 @@ export default function LoggedInNav() {
     const getUserObject = async () => {
       const token = Cookies.get("authToken");
       if (!token) {
-        throw new Error("Token not available");
+        console.error("No token found");
+        return
       }
 
       try {

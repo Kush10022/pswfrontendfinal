@@ -1,12 +1,15 @@
 // pages/logout.js
 "use client"
-import { useEffect } from 'react';
 import {useRouter} from 'next/navigation';
 import { destroyCookie } from 'nookies';
+import { useAtom } from 'jotai';
+import { userProfileAtom } from '../atoms/userAtom';
 
 export default function Logout() {
+  const [user, setUser] = useAtom(userProfileAtom);
     const router = useRouter();
     const onConfirm = () => {
+        setUser(null);
         destroyCookie(null, 'authToken');
         router.push('/login');
     }
