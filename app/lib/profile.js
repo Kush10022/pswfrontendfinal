@@ -14,10 +14,12 @@ import Calendar from "react-calendar";
 import { EditSvg, ViewIconSvg } from "../lib/svgs";
 import { FilePicker } from "../lib/filePicker";
 import { PersonalInfo } from "../lib/personalInfo";
+import { AvailabilityCalendar } from "./profileCalander";
 import toast from "react-hot-toast";
 import "react-calendar/dist/Calendar.css"; // Import calendar styling
 import "../../styling/calendar.css"; // Import custom CSS
 import "react-responsive-modal/styles.css"; // Import modal styling
+import e from "cors";
 
 const futureLimitMonths = 2; // Number of months in the future that the user can book off
 
@@ -43,6 +45,7 @@ export default function ProfilePage() {
   const [calendarHover, setCalendarHover] = useState(false);
   const [documentHover, setDocumentHover] = useState(false);
   const [documentEdit, setDocumentEdit] = useState(false);
+  const [editCalendar, setEditCalendar] = useState(false);
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => {
@@ -51,6 +54,7 @@ export default function ProfilePage() {
     setDocumentView(false);
     setDocumentEdit(false);
     setPersonalInfoEdit(false);
+    setEditCalendar(false);
 
     setImageUrl(user?.profilePicture || imageUrl);
     setDocument(user?.document || document);
@@ -190,7 +194,9 @@ export default function ProfilePage() {
       today.getDate()
     );
 
+
     if (user?.calendar?.availableDays) {
+      if ( date < today || date > futureLimit) return true;
       const availableDays = user.calendar.availableDays;
       const formattedDate = formatDate(date);
       return !availableDays.includes(formattedDate);
@@ -214,6 +220,7 @@ export default function ProfilePage() {
             user={user ? user : {}}
           />
         )}
+        { editCalendar && <AvailabilityCalendar onClose={onCloseModal}  />}
       </Modal>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -401,7 +408,12 @@ export default function ProfilePage() {
                 </div>
                 <Calendar locale="en-CA" tileDisabled={isTileDisabled} />
                 {calendarHover && (
-                  <button className="absolute top-4 right-4 bg-white  p-2 shadow-sm border border-gray-200 rounded-full ">
+                  <button className="absolute top-4 right-4 bg-white  p-2 shadow-sm border border-gray-200 rounded-full "
+                  onClick={() => {
+                    setEditCalendar(true);
+                    onOpenModal();
+                  }}
+                  >
                     <EditSvg />
                   </button>
                 )}

@@ -7,10 +7,11 @@ import Cookies from "js-cookie";
 import { useAtom } from "jotai";
 import { userProfileAtom } from "../atoms/userAtom";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const futureLimitMonths = 2; // Number of months in the future that the user can book off
 
-const AvailabilityCalendar = () => {
+const AvailabilityCalendar = ({onClose}) => {
   const router = useRouter();
   const [userProfile, setUserProfile] = useAtom(userProfileAtom);
   const [bookOffDates, setBookOffDates] = useState([]); // Booked off dates
@@ -90,6 +91,7 @@ const AvailabilityCalendar = () => {
 
   // Submit booked-off dates
   const handleSubmit = async () => {
+    const toastId = toast.loading("Updating booked-off dates...");
     const availableDays = [];
     const today = new Date();
     const futureLimit = new Date(
@@ -126,8 +128,11 @@ const AvailabilityCalendar = () => {
       }
       setUserProfile({ ...userProfile, calendar: { availableDays } });
       setChangesMade(false);
-      router.reload();
+      toast.success("Booked-off dates updated successfully", { id: toastId });
+      onClose();
+      router.refresh();
     } catch (error) {
+      toast.error("Failed to update booked-off dates", { id: toastId });
       console.error("Error updating booked-off dates:", error);
     }
   };
