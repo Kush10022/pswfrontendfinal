@@ -90,6 +90,7 @@ export default function Login({ onSubmit }) {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="on"
                 />
                 <div className={styles.rememberMe}>
                   {StatusMessage && (
