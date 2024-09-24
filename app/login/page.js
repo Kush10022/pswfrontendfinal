@@ -1,23 +1,21 @@
 "use client";
 import React, { useState } from "react";
-import styles from "../../styling/login.module.css";
 import Link from "next/link";
-import { Button } from "react-bootstrap";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
 import { useRouter } from "next/navigation";
 import { AssitiveFetch } from "../lib/assitivefetch";
+import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
-export default function Login({ onSubmit }) {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const router = useRouter();
-  const [StatusMessage, setStatusMessage] = useState("");
 
-  // function setToken(token) {
-  //   localStorage.setItem('access_token', token);
-  // }
+  if (Cookies.get("authToken")) {
+    router.push("/dashboard");
+  }
+
   function setCookie(name, value, hours) {
     let expires = "";
     if (hours) {
@@ -34,6 +32,8 @@ export default function Login({ onSubmit }) {
   }
 
   async function handleSubmit(e) {
+    setIsLoggingIn(true);
+    const toastId = toast.loading("Logging in...");
     e.preventDefault();
     const payload = {
       email: email,
@@ -47,99 +47,121 @@ export default function Login({ onSubmit }) {
       );
 
       if (responseData.status === 403) {
-        setStatusMessage(
-          "Please verify your email before logging in or check your email for verification link."
-        );
+        setTimeout(() => {
+          toast.error(
+            "Please verify your email before logging in or check your email for verification link.",
+            { id: toastId }
+          );
+          setIsLoggingIn(false);
+        }, 1000);
       } else if (responseData.status === "ok") {
-        // setToken(responseData.token);
         setCookie("authToken", responseData.token, 24); // Sets a cookie named 'authToken' with the token value, expiring in 24 hours.
-        router.push("/dashboard");
+        setTimeout(() => {
+          toast.success("Login successful!", { id: toastId });
+          setIsLoggingIn(false);
+          router.push("/dashboard");
+        }, 1000);
       } else {
-        setStatusMessage("Please enter a valid email and password");
+        setTimeout(() => {
+          if (responseData.error.code == 404) {
+            toast.error(
+              "Please check your email and password.",
+              { id: toastId }
+            );
+          } else {
+            toast.error(responseData.error.message, { id: toastId });
+          }
+          setIsLoggingIn(false);
+        }, 1000);
       }
     } catch (error) {
+      setTimeout(() => {
+        toast.error("An error occurred during login. Please try again.", {
+          id: toastId,
+        });
+        setIsLoggingIn(false);
+      }, 1000);
       console.error("Error during user login", error);
     }
   }
+
   return (
-    <Container fluid>
-      <Row>
-        <Col sm={12} md={12} lg={8} xl={8} xxl={8}>
-          <div className="flex justify-center items-center h-screen bg-gray-100">
-            <div className="w-3/5 bg-white p-8 rounded-lg shadow-md mr-8 flex flex-col items-center">
-              <p className="text-2xl text-emerald-800">PSW Support and Care</p>
-              <p>Welcome Back, Please login to your account.</p>
-              <button className={styles.githubBtn}>Login with Google</button>
-              <div className={styles.orSeparator}>- OR -</div>
-              <form
-                className={styles.loginForm}
-                onSubmit={handleSubmit}
-                role="form"
-                data-testid="form-button"
-              >
+    <>
+      <div className="my-1 flex justify-center items-center h-full pt-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 w-full md:w-3/4">
+          {/* Login Form Section */}
+          <div className="bg-white p-8 rounded-lg shadow-md flex flex-col justify-center items-center w-full max-w-md">
+            <h1 className="text-2xl font-bold mb-4">
+              PSW Support and Care
+            </h1>
+            <p className="mb-4">Welcome Back, Please login to your account.</p>
+
+            <form
+              className="w-full"
+              onSubmit={handleSubmit}
+              role="form"
+              data-testid="form-button"
+            >
+              <div className="mb-4">
                 <input
                   type="email"
                   placeholder="Email Address"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+              </div>
+              <div className="mb-4">
                 <input
                   type="password"
                   placeholder="Password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   autoComplete="on"
                 />
-                <div className={styles.rememberMe}>
-                  {StatusMessage && (
-                    <p className={styles.error}>{StatusMessage}</p>
-                  )}
-                </div>
-                <Link href="/resetPassword" className={styles.forgotPassword}>
-                  Forgot password
-                </Link>
-                {/* <Link href="#"> */}
-                <button
-                  data-testid="login-button"
-                  type="submit"
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Login
-                </button>
-                {/* </Link> */}
-                <Link href="/registeruser">
-                  <Button type="button">Sign up</Button>
-                </Link>
-              </form>
-              <p className={styles.terms}>
-                By signing up, you agree to PSW Terms and Conditions & Privacy
-                Policy
-              </p>
-            </div>
-          </div>
-        </Col>
-        <Col sm={12} md={12} lg={4} xl={4} xxl={4}>
-          <div className="flex justify-center items-center h-screen bg-gray-100">
-            <div className="w-3/5 p-8 bg-green-700 rounded-lg text-white text-center relative">
-              {/* <button className={styles.hideBtn}>Hide</button> */}
-              <h2>How we work?</h2>
-              <p>
-                Find out how are changing lives of hundreds of people needing
-                special assitance.
-              </p>
+              </div>
               <Link
-                className={styles.playBtn}
-                href="https://www.youtube.com/"
-                style={{ textDecoration: "none" }}
+                href="/resetPassword"
+                className="text-sm text-blue-500 hover:underline"
               >
-                ▶️
+                Forgot password?
               </Link>
-            </div>
+              <button
+                data-testid="login-button"
+                type="submit"
+                className={`w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 ${
+                  isLoggingIn ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={isLoggingIn}
+              >
+                {isLoggingIn ? "Logging in..." : "Login"}
+              </button>
+
+              <p className="text-center mt-4 text-sm">
+              Don't have an account?{" "}
+              <Link href="/registeruser" className="text-blue-500 hover:underline">
+                Sign Up
+              </Link>
+            </p>
+            </form>
           </div>
-        </Col>
-      </Row>
-    </Container>
+
+          {/* Info Section */}
+          <div className="bg-green-700 p-8 rounded-lg text-white flex flex-col justify-center items-center text-center">
+            <h2 className="text-2xl font-bold mb-4">How we work?</h2>
+            <p className="mb-4">
+              Find out how we are changing lives of hundreds of people needing
+              special assistance.
+            </p>
+            <Link href="https://www.youtube.com/">
+              <button className="text-white text-3xl">▶️</button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
