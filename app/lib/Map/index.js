@@ -1,7 +1,7 @@
 import { MapContainer, TileLayer, useMap, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-const SmallMap = ({ location = { latitude, longitude }, zoom = 20 }) => {
+const SmallMap = ({ location = { latitude, longitude }, zoom = 20 , extraTailwindCSSClass}) => {
   // If there is no location, we return null
   if (!location) return null;
 
@@ -21,6 +21,7 @@ const SmallMap = ({ location = { latitude, longitude }, zoom = 20 }) => {
       center={[latitude, longitude]}
       zoom={zoom}
       style={{ height: "100%", width: "100%" }}
+      className={`${extraTailwindCSSClass}`}
     >
       <ChangeView center={[latitude, longitude]} zoom={zoom} />
       <TileLayer

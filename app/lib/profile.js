@@ -15,11 +15,11 @@ import { EditSvg, ViewIconSvg } from "../lib/svgs";
 import { FilePicker } from "../lib/filePicker";
 import { PersonalInfo } from "../lib/personalInfo";
 import { AvailabilityCalendar } from "./profileCalander";
+import { AddressEditor } from "./Address";
 import toast from "react-hot-toast";
 import "react-calendar/dist/Calendar.css"; // Import calendar styling
 import "../../styling/calendar.css"; // Import custom CSS
 import "react-responsive-modal/styles.css"; // Import modal styling
-import e from "cors";
 
 const futureLimitMonths = 2; // Number of months in the future that the user can book off
 
@@ -46,6 +46,7 @@ export default function ProfilePage() {
   const [documentHover, setDocumentHover] = useState(false);
   const [documentEdit, setDocumentEdit] = useState(false);
   const [editCalendar, setEditCalendar] = useState(false);
+  const [addressEdit, setAddressEdit] = useState(false);
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => {
@@ -55,7 +56,7 @@ export default function ProfilePage() {
     setDocumentEdit(false);
     setPersonalInfoEdit(false);
     setEditCalendar(false);
-
+    setAddressEdit(false);
     setImageUrl(user?.profilePicture || imageUrl);
     setDocument(user?.document || document);
     router.refresh();
@@ -194,9 +195,8 @@ export default function ProfilePage() {
       today.getDate()
     );
 
-
     if (user?.calendar?.availableDays) {
-      if ( date < today || date > futureLimit) return true;
+      if (date < today || date > futureLimit) return true;
       const availableDays = user.calendar.availableDays;
       const formattedDate = formatDate(date);
       return !availableDays.includes(formattedDate);
@@ -204,9 +204,43 @@ export default function ProfilePage() {
     return date < today || date > futureLimit;
   };
 
+  const handleAddressSubmit = async (address) => {
+    try {
+      const token = Cookies.get("authToken");
+      if (!token) {
+        throw new Error("Token not available");
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/address`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `JWT ${token}`,
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(address),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update address");
+      }
+
+      const responseData = await response.json();
+
+      setUser({
+        ...user,
+        address: responseData.address,
+      });
+    } catch (error) {
+      console.error("Error updating address:", error);
+      throw new Error("Error updating address");
+    }
+  };
+
   return (
-    <div className="container mx-auto my-1 p-4 bg-white">
-      {/* Modal for profile pic and document */}
+    <div className="container mx-auto my-1 p-4 bg-white1 ">
       <Modal open={open} onClose={onCloseModal} center>
         {profilePicEdit && <ProfilePicUploader onDone={onCloseModal} />}
         {documentView && <PDFViewer fileUrl={document} />}
@@ -220,8 +254,24 @@ export default function ProfilePage() {
             user={user ? user : {}}
           />
         )}
-        { editCalendar && <AvailabilityCalendar onClose={onCloseModal}  />}
+        {editCalendar && <AvailabilityCalendar onClose={onCloseModal} />}
       </Modal>
+
+      {addressEdit && (
+        <Modal
+          open={open}
+          onClose={onCloseModal}
+          center
+          styles={{
+            modal: {
+              width: "80vw", // 80% of the viewport width
+              maxWidth: "none", // Remove any max-width restrictions if needed
+            },
+          }}
+        >
+          <AddressEditor Submit={handleAddressSubmit} Close={onCloseModal} />
+        </Modal>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Left Column (Profile Pic and Credential Document) */}
@@ -347,7 +397,13 @@ export default function ProfilePage() {
                 )}
                 {/* Edit button */}
                 {addressHover && (
-                  <button className="absolute top-4 right-4 bg-white text-white p-2 shadow-sm border border-gray-200 rounded-full ">
+                  <button
+                    className="absolute top-4 right-4 bg-white text-white p-2 shadow-sm border border-gray-200 rounded-full "
+                    onClick={() => {
+                      setAddressEdit(true);
+                      onOpenModal();
+                    }}
+                  >
                     <EditSvg />
                   </button>
                 )}
@@ -408,11 +464,12 @@ export default function ProfilePage() {
                 </div>
                 <Calendar locale="en-CA" tileDisabled={isTileDisabled} />
                 {calendarHover && (
-                  <button className="absolute top-4 right-4 bg-white  p-2 shadow-sm border border-gray-200 rounded-full "
-                  onClick={() => {
-                    setEditCalendar(true);
-                    onOpenModal();
-                  }}
+                  <button
+                    className="absolute top-4 right-4 bg-white  p-2 shadow-sm border border-gray-200 rounded-full "
+                    onClick={() => {
+                      setEditCalendar(true);
+                      onOpenModal();
+                    }}
                   >
                     <EditSvg />
                   </button>
