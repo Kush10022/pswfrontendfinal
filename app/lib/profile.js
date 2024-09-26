@@ -103,7 +103,6 @@ export default function ProfilePage() {
   };
 
   const handlePersonalInfoEdit = async (data) => {
-    const toastId = toast.loading("Updating personal information...");
     try {
       const token = Cookies.get("authToken");
       if (!token) {
@@ -142,12 +141,10 @@ export default function ProfilePage() {
         phone: modifiedData.phone,
         mobile: modifiedData.mobile,
       });
-      toast.dismiss(toastId);
-      toast.success("Personal information updated successfully!");
+      
     } catch (error) {
-      console.error("Error updating personal info:", error);
-      toast.dismiss(toastId);
-      toast.error("Error updating personal information!");
+      const message = error.message || "An error occurred while saving your information";
+      throw new Error(message);
     }
   };
 
