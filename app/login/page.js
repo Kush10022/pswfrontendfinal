@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AssitiveFetch } from "../lib/assitivefetch";
@@ -12,9 +12,12 @@ export default function Login() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const router = useRouter();
 
-  if (Cookies.get("authToken")) {
-    router.push("/dashboard");
-  }
+  // Check if authToken exists and redirect to dashboard
+  useEffect(() => {
+    if (Cookies.get("authToken")) {
+      router.push("/dashboard");
+    }
+  }, [router]);
 
   function setCookie(name, value, hours) {
     let expires = "";
@@ -64,10 +67,9 @@ export default function Login() {
       } else {
         setTimeout(() => {
           if (responseData.error.code == 404) {
-            toast.error(
-              "Please check your email and password.",
-              { id: toastId }
-            );
+            toast.error("Please check your email and password.", {
+              id: toastId,
+            });
           } else {
             toast.error(responseData.error.message, { id: toastId });
           }
@@ -91,9 +93,7 @@ export default function Login() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1 w-full md:w-3/4">
           {/* Login Form Section */}
           <div className="bg-white p-8 rounded-lg shadow-md flex flex-col justify-center items-center w-full max-w-md">
-            <h1 className="text-2xl font-bold mb-4">
-              PSW Support and Care
-            </h1>
+            <h1 className="text-2xl font-bold mb-4">PSW Support and Care</h1>
             <p className="mb-4">Welcome Back, Please login to your account.</p>
 
             <form
@@ -141,11 +141,14 @@ export default function Login() {
               </button>
 
               <p className="text-center mt-4 text-sm">
-              Don't have an account?{" "}
-              <Link href="/registeruser" className="text-blue-500 hover:underline">
-                Sign Up
-              </Link>
-            </p>
+                Don't have an account?{" "}
+                <Link
+                  href="/registeruser"
+                  className="text-blue-500 hover:underline"
+                >
+                  Sign Up
+                </Link>
+              </p>
             </form>
           </div>
 
