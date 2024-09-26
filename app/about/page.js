@@ -6,8 +6,7 @@ const AboutPage = () => {
     const teamMembers = [
         { name: 'Kush Patel', role: 'Founder & CEO' },
         { name: 'Ujjval Patel', role: 'Co-founder & CTO' },
-        { name: 'Harnoor Kaur', role: 'Co-founder & Lead Designer' },
-        { name: 'Sumiksh Trehan', role: 'Co-founder & Marketing Director' }
+        { name: 'Sumiksh Trehan', role: 'Co-founder & Lead Designer' }
       ];
   return (
     <div className="font-sans bg-gray-100 p-8">
