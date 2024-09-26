@@ -1,10 +1,33 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { AssitiveFetch } from "../lib/assitivefetch";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
+
+// Modal Component
+const Modal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
+        <h2 className="text-2xl font-bold mb-4">Congratulations!</h2>
+        <p className="mb-4">
+          Registration successful! Please check your email (also check your spam
+          folder) to verify your account. Once verified, you can log in.
+        </p>
+        <button
+          onClick={onClose}
+          className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default function Register() {
   const [firstName, setFirstName] = useState("");
@@ -14,11 +37,27 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isPSW, setIsPSW] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false); // Track registration status
+  const [isModalOpen, setIsModalOpen] = useState(false); // Track modal state
   const router = useRouter();
 
-  if (Cookies.get("authToken")) {
-    router.push("/dashboard");
-  }
+  // Redirect if the user is already authenticated
+  useEffect(() => {
+    if (Cookies.get("authToken")) {
+      router.push("/dashboard");
+    }
+  }, [router]);
+
+  // Function to validate email
+  const validateEmail = (email) => {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  };
+
+  // Function to validate password strength (min 8 characters)
+  const validatePassword = (password) => {
+    return password.length >= 8;
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -27,6 +66,20 @@ export default function Register() {
     // Check if passwords match
     if (password !== confirmPassword) {
       toast.error("Passwords do not match.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Check if email is valid
+    if (!validateEmail(email)) {
+      toast.error("Please enter a valid email address.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Check password strength
+    if (!validatePassword(password)) {
+      toast.error("Password must be at least 8 characters long.");
       setIsSubmitting(false);
       return;
     }
@@ -56,9 +109,11 @@ export default function Register() {
         return;
       }
 
+      // If registration is successful
       setTimeout(() => {
-        toast.success("Registration successful!", { id: toastId });
-        router.push("/afterEmailregister");
+        toast.dismiss(toastId);
+        setIsRegistered(true); // Disable the form
+        setIsModalOpen(true); // Show the modal
       }, 1000);
     } catch (err) {
       setTimeout(() => {
@@ -69,6 +124,12 @@ export default function Register() {
       }, 1000);
     }
   }
+
+  // Handle modal close and redirect to login
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    router.push("/login");
+  };
 
   return (
     <>
@@ -88,6 +149,7 @@ export default function Register() {
                   onChange={(e) => setFirstName(e.target.value)}
                   className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
+                  disabled={isSubmitting || isRegistered}
                 />
               </div>
 
@@ -99,6 +161,7 @@ export default function Register() {
                   onChange={(e) => setLastName(e.target.value)}
                   className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
+                  disabled={isSubmitting || isRegistered}
                 />
               </div>
 
@@ -110,6 +173,7 @@ export default function Register() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
+                  disabled={isSubmitting || isRegistered}
                 />
               </div>
 
@@ -124,6 +188,7 @@ export default function Register() {
                     checked={isPSW}
                     onChange={(e) => setIsPSW(e.target.checked)}
                     className="sr-only"
+                    disabled={isSubmitting || isRegistered}
                   />
                   <div
                     className={`relative w-14 h-8 transition duration-200 ease-linear rounded-full ${
@@ -150,6 +215,7 @@ export default function Register() {
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
+                  disabled={isSubmitting || isRegistered}
                 />
               </div>
 
@@ -161,17 +227,24 @@ export default function Register() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
+                  disabled={isSubmitting || isRegistered}
                 />
               </div>
 
               <button
                 type="submit"
                 className={`w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded ${
-                  isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                  isSubmitting || isRegistered
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
                 }`}
-                disabled={isSubmitting}
+                disabled={isSubmitting || isRegistered}
               >
-                {isSubmitting ? "Signing up..." : "Sign Up"}
+                {isSubmitting
+                  ? "Signing up..."
+                  : isRegistered
+                  ? "Registration complete"
+                  : "Sign Up"}
               </button>
             </form>
             <p className="text-center mt-4 text-sm">
@@ -199,6 +272,9 @@ export default function Register() {
           </div>
         </div>
       </div>
+
+      {/* Modal Component */}
+      <Modal isOpen={isModalOpen} onClose={handleModalClose} />
     </>
   );
 }
