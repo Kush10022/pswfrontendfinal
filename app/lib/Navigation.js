@@ -10,8 +10,7 @@ export default function Navigation() {
     pathname === "/login" ||
     pathname === "/registeruser" ||
     pathname === "/" ||
-    pathname === "/resetpassword" ||
-    pathname === "/afterEmailregister"
+    pathname === "/passwordreset"
   ) {
     return <LoggedOutNav />;
   } else {

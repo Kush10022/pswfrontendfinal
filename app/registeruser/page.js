@@ -6,12 +6,30 @@ import { AssitiveFetch } from "../lib/assitivefetch";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 
-// Modal Component
+// Modal Component with Escape key handling
 const Modal = ({ isOpen, onClose }) => {
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+    }
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      aria-modal="true"
+      role="dialog"
+    >
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
         <h2 className="text-2xl font-bold mb-4">Congratulations!</h2>
         <p className="mb-4">
