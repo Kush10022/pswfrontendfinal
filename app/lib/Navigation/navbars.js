@@ -1,14 +1,78 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-"use client";
-import React, { useEffect, useState } from "react";
-import styles from "../../styling/profile.module.css";
-import { useAtom } from "jotai";
-import { userProfileAtom } from "../atoms/userAtom";
+
+import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import Link from "next/link";
+import { useAtom } from "jotai";
+import { userProfileAtom } from "../../atoms/userAtom";
+import styles from "../../../styling/profile.module.css";
 
-export default function LoggedInNav() {
+const LoggedOutNav = () => {
+  const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    const closeOnEscape = (e) => {
+      if (e.key === "Escape") {
+        setExpanded(false);
+      }
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, []);
+
+  const closeMenu = () => setExpanded(false);
+
+  return (
+    <nav className="fixed w-full top-0 start-0 bg-emerald-800 shadow-sm px-10 py-3 flex justify-between items-center">
+      {/* Website Logo (Home Link) */}
+      <Link
+        href="/"
+        onClick={closeMenu}
+        className="text-slate-50 text-2xl font-semibold no-underline"
+      >
+        Support Worker
+      </Link>
+
+      {/* Hamburger Menu Button */}
+      <button
+        className="text-white text-4xl lg:hidden"
+        onClick={() => setExpanded(!expanded)}
+        aria-label="Toggle navigation"
+      >
+        {expanded ? "✕" : "☰"}
+      </button>
+
+      {/* Navbar Items */}
+      <div className={`lg:flex ${expanded ? "block" : "hidden"}`}>
+        <ul className="flex flex-col lg:flex-row lg:space-x-6">
+          <li>
+            <Link
+              href="/login"
+              onClick={closeMenu}
+              className="text-slate-50 hover:text-green-500 transition no-underline"
+            >
+              Login
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/registeruser"
+              onClick={closeMenu}
+              className="text-slate-50 hover:text-green-500 transition no-underline"
+            >
+              Register
+            </Link>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  );
+};
+
+const LoggedInNav = () => {
   const imgURL = "/default-profile.jpg";
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [userProfile, setUserProfile] = useAtom(userProfileAtom);
@@ -22,7 +86,7 @@ export default function LoggedInNav() {
       const token = Cookies.get("authToken");
       if (!token) {
         console.error("No token found");
-        return
+        return;
       }
 
       try {
@@ -66,9 +130,13 @@ export default function LoggedInNav() {
   }, []);
 
   return (
-    <nav className="relative bg-emerald-800 shadow px-10 py-2 flex justify-between items-center">
+    <div className="fixed w-full top-0 start-0 z-[1001]">
+    <nav className="relative  bg-emerald-800 shadow px-10 py-2 flex justify-between items-center">
       {/* Website Logo */}
-      <Link href="/dashboard" className="flex items-center space-x-2 no-underline">
+      <Link
+        href="/dashboard"
+        className="flex items-center space-x-2 no-underline"
+      >
         <img src="./logo.png" alt="PSW Logo" className="h-8 w-8 rounded-full" />
         <span className="font-semibold text-slate-50 text-lg">PSW</span>
       </Link>
@@ -215,5 +283,8 @@ export default function LoggedInNav() {
         </div>
       )}
     </nav>
+    </div>
   );
-}
+};
+
+export { LoggedOutNav, LoggedInNav };

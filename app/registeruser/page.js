@@ -2,9 +2,11 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { AssitiveFetch } from "../lib/assitivefetch";
+import { AssitiveFetch } from "../lib/utils";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 // Modal Component with Escape key handling
 const Modal = ({ isOpen, onClose }) => {
@@ -57,7 +59,18 @@ export default function Register() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false); // Track registration status
   const [isModalOpen, setIsModalOpen] = useState(false); // Track modal state
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
   const router = useRouter();
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setIsConfirmPasswordVisible(!isConfirmPasswordVisible);
+  };
 
   // Redirect if the user is already authenticated
   useEffect(() => {
@@ -151,7 +164,7 @@ export default function Register() {
 
   return (
     <>
-      <div className="h-full flex justify-center items-center pt-10">
+      <div className="h-full flex justify-center items-center my-10 pt-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full md:w-3/4">
           {/* Registration Form Section */}
           <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md flex flex-col justify-center">
@@ -225,27 +238,41 @@ export default function Register() {
                 </span>
               </div>
 
-              <div>
+              <div className="relative">
                 <input
-                  type="password"
+                  type={isPasswordVisible ? "text" : "password"}
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  autoComplete="on"
+                  onBlur={() => setIsPasswordVisible(false)}
                   required
                   disabled={isSubmitting || isRegistered}
                 />
+                <FontAwesomeIcon
+                  icon={isPasswordVisible ? faEyeSlash : faEye}
+                  className="absolute right-3 top-3 cursor-pointer text-gray-500"
+                  onClick={togglePasswordVisibility}
+                />
               </div>
 
-              <div>
+              <div className="relative">
                 <input
-                  type="password"
+                  type={isConfirmPasswordVisible ? "text" : "password"}
                   placeholder="Confirm Password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  autoComplete="on"
+                  onBlur={() => setIsConfirmPasswordVisible(false)}
                   required
                   disabled={isSubmitting || isRegistered}
+                />
+                <FontAwesomeIcon
+                  icon={isConfirmPasswordVisible ? faEyeSlash : faEye}
+                  className="absolute right-3 top-3 cursor-pointer text-gray-500"
+                  onClick={toggleConfirmPasswordVisibility}
                 />
               </div>
 

@@ -13,7 +13,7 @@ function LoadingSpinner() {
 }
 
 // Dynamically import the ProfilePage component with a loading spinner
-const DynamicProfilePage = dynamic(() => import("../lib/profile"), {
+const DynamicProfilePage = dynamic(() => import("../lib/Profile"), {
   loading: () => <LoadingSpinner />, // Use custom loading spinner here
   ssr: false,
 });

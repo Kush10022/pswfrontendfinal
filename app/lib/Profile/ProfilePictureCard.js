@@ -1,21 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import PropTypes from "prop-types";
-import { EditSvg } from "./svgs";
+import { EditSvg } from "../svgs";
 
-ProfilePictureCard.propTypes = {
-  picture: PropTypes.string,
-  name: PropTypes.string.isRequired,
-  role: PropTypes.string.isRequired,
-  onClick: PropTypes.func,
-};
 
-export default function ProfilePictureCard({
-  picture = "/user/defaultProfilePic.jpeg",
+const ProfilePictureCard =  ({
+  picture = "default-profile.jpg",
   name = "User",
   role = "Personal Support Worker",
   onClick = () => { console.log("Edit button clicked") },
-}) {
+}) => {
 
   const [isHovered, setIsHovered] = React.useState(false);
 
@@ -52,3 +46,12 @@ export default function ProfilePictureCard({
     </div>
   );
 }
+
+ProfilePictureCard.propTypes = {
+  picture: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  role: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+};
+
+export { ProfilePictureCard };

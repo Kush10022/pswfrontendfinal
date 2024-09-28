@@ -1,24 +1,30 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
+
+// Importing Libraries
 import React, { useState, useEffect } from "react";
-import { useAtom } from "jotai";
-import { userProfileAtom } from "../atoms/userAtom";
+import toast from "react-hot-toast";
 import Cookies from "js-cookie";
+import Calendar from "react-calendar";
+import { useAtom } from "jotai";
+import { userProfileAtom } from "../../atoms/userAtom";
 import { useRouter } from "next/navigation";
 import { Modal } from "react-responsive-modal";
-import { SmallMap as DynamicMap } from "./Map";
-import ProfilePictureCard from "../lib/ProfilePictureCard";
-import { ProfilePicUploader } from "../lib/ProfilePicUploader";
-import { PDFViewer } from "../lib/pdfViewer";
-import Calendar from "react-calendar";
-import { EditSvg, ViewIconSvg } from "../lib/svgs";
-import { FilePicker } from "../lib/filePicker";
-import { PersonalInfo } from "../lib/personalInfo";
-import { AvailabilityCalendar } from "./profileCalander";
-import { AddressEditor } from "./Address";
-import toast from "react-hot-toast";
+
+// Importing Components
+import { SmallMap as DynamicMap } from "../Map";
+import { ProfilePictureCard } from "./ProfilePictureCard";
+import { ProfilePicUploader } from "./ProfilePicUploader";
+import { PDFViewer } from "./PDFViewer";
+import { EditSvg, ViewIconSvg } from "../svgs";
+import { FilePicker } from "./FilePicker";
+import { PersonalInfo } from "./PersonalInfo";
+import { AvailabilityCalendar } from "./ProfileCalander";
+import { AddressEditor } from "../Address";
+
+// Importing Styling Sheets
 import "react-calendar/dist/Calendar.css"; // Import calendar styling
-import "../../styling/calendar.css"; // Import custom CSS
+import "../../../styling/calendar.css"; // Import custom CSS
 import "react-responsive-modal/styles.css"; // Import modal styling
 
 const futureLimitMonths = 2; // Number of months in the future that the user can book off
@@ -30,7 +36,7 @@ export default function ProfilePage() {
   const [documentView, setDocumentView] = useState(false);
   const [imageUrl, setImageUrl] = useState(
     user?.profilePicture ||
-      "https://www.clipartkey.com/mpngs/m/152-1520367_user-profile-default-image-png-clipart-png-download.png"
+      "/default-profile.jpg"
   );
   const [document, setDocument] = useState(
     user?.document || "https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK"
@@ -141,9 +147,9 @@ export default function ProfilePage() {
         phone: modifiedData.phone,
         mobile: modifiedData.mobile,
       });
-      
     } catch (error) {
-      const message = error.message || "An error occurred while saving your information";
+      const message =
+        error.message || "An error occurred while saving your information";
       throw new Error(message);
     }
   };
@@ -237,7 +243,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="container mx-auto my-1 p-4 bg-white1 ">
+    <div className="container mx-auto my-10 p-4 bg-white1 ">
       <Modal open={open} onClose={onCloseModal} center>
         {profilePicEdit && <ProfilePicUploader onDone={onCloseModal} />}
         {documentView && <PDFViewer fileUrl={document} />}

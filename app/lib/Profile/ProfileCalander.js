@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // Import calendar styling
-import "../../styling/calendar.css"; // Import custom CSS
+import "../../../styling/calendar.css"; // Import custom CSS
 import Cookies from "js-cookie";
 import { useAtom } from "jotai";
-import { userProfileAtom } from "../atoms/userAtom";
+import { userProfileAtom } from "../../atoms/userAtom";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 

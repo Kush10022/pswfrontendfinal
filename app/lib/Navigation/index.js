@@ -1,8 +1,7 @@
 "use client";
-import { usePathname } from "next/navigation";
 import React from "react";
-import LoggedInNav from "./LogggedInNav";
-import LoggedOutNav from "./LoggedOutNav";
+import { usePathname } from "next/navigation";
+import { LoggedInNav, LoggedOutNav } from "./navbars";
 
 export default function Navigation() {
   const pathname = usePathname();

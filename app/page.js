@@ -1,9 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import React from "react";
-import { useRouter }from "next/navigation";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 import Cookies from "js-cookie";
-export default function Home() {
 
+export default function Home() {
   const router = useRouter();
 
   if (Cookies.get("authToken")) {
@@ -11,23 +13,71 @@ export default function Home() {
   }
 
   return (
-    <div className="relative h-screen bg-cover bg-center" style={{ backgroundImage: "url('/bglanding.jpg')" }}>
-      <div className="flex h-full w-full items-center justify-center bg-black bg-opacity-50">
-        <div className="text-white text-4xl font-bold text-center pb-6">
-            Connecting Care, Creating Community
-            <div className="text-white text-2xl pt-4">
-            <p className="font-semibold">Discover Seamless Care Solutions:</p>
-            <p className="font-light">Find Verified PSWs: Connect with top-tier Personal Support Workers.</p>
-            <p className="font-light">Tailored Assistance: Access personalized care plans.</p>
-            <p className="font-light">Reliable Support: Rely on seamless communication and coordination.</p>
-            <p className="font-semibold">Empowering PSWs:</p>
-            <p className="font-light">Rewarding Opportunities: Explore fulfilling job opportunities.</p>
-            <p className="font-light">Professional Growth: Access resources to enhance your skills.</p>
-            <p className="font-light">Secure Platform: Trust in our privacy-focused environment.</p>
-            Join PSW Support today for care and career satisfaction.
+    <div className="max-w-full mx-auto bg-white">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex min-h-screen bg-white">
+          {/* Text Section */}
+          <div className="flex-1 flex flex-col justify-center px-6 md:px-12 lg:px-12">
+            <h1 className="text-3xl md:text-3xl font-bold mb-6">
+              Connecting Care, Creating Community
+            </h1>
+            {/* Corrected the structure by removing <p> tag wrapping around headings and lists */}
+            <div className="text-base md:text-lg mb-8">
+              <h2 className="text-xl font-bold mb-2">
+                Discover Seamless Care Solutions:
+              </h2>
+              <ul className="list-none pl-6">
+                <li>
+                  <strong>Find Verified PSWs:</strong> Connect with top-tier
+                  Personal Support Workers.
+                </li>
+                <li>
+                  <strong>Tailored Assistance:</strong> Access personalized care
+                  plans.
+                </li>
+                <li>
+                  <strong>Reliable Support:</strong> Rely on seamless
+                  communication and coordination.
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h2 className="text-xl font-bold mb-2">Empowering PSWs:</h2>
+              <ul className="list-none pl-6">
+                <li>
+                  <strong>Rewarding Opportunities:</strong> Explore fulfilling
+                  job opportunities.
+                </li>
+                <li>
+                  <strong>Professional Growth:</strong> Access resources to
+                  enhance your skills.
+                </li>
+                <li>
+                  <strong>Secure Platform:</strong> Trust in our privacy-focused
+                  environment.
+                </li>
+              </ul>
+            </div>
+
+            <p className="mt-4">
+              Join PSW Support today for care and career satisfaction.
+            </p>
+          </div>
+
+          {/* Image Section */}
+          <div className="flex-1 hidden lg:flex justify-center items-center">
+            <div className="shadow-xl rounded-lg overflow-hidden">
+              <Image
+                src="/bglanding.jpg"
+                width={500}
+                height={500}
+                alt="Support Finder"
+                className="rounded-lg"
+              />
+            </div>
           </div>
         </div>
-        
       </div>
     </div>
   );
