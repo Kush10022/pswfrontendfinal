@@ -1,8 +1,8 @@
-import React from 'react';
-import Navigation from './lib/Navigation';
-import { Toaster } from 'react-hot-toast';
+import React from "react";
+import Navigation from "./lib/Navigation";
+import { Toaster } from "react-hot-toast";
 import "./global.css";
-import 'bootstrap/dist/css/bootstrap.css';
+import "bootstrap/dist/css/bootstrap.css";
 
 export const metadata = {
   title: "Support Worker",
@@ -11,12 +11,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-      <html lang="en">
-        <body>
-          <Toaster />
-          <Navigation />
-          {children}
-        </body>
-      </html>
+    <html lang="en">
+      <body>
+        <Toaster />
+        <Navigation />
+        <div className="pt-10 my-auto">{children}</div>
+      </body>
+    </html>
   );
 }
