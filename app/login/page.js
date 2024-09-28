@@ -1,16 +1,23 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AssitiveFetch } from "../lib/assitivefetch";
+import { AssitiveFetch } from "../lib/utils";
+import Link from "next/link";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const router = useRouter();
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   // Check if authToken exists and redirect to dashboard
   useEffect(() => {
@@ -88,7 +95,7 @@ export default function Login() {
   }
 
   return (
-    <>
+    <div className="my-10 pt-10">
       <div className="my-1 flex justify-center items-center h-full pt-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1 w-full md:w-3/4">
           {/* Login Form Section */}
@@ -112,15 +119,22 @@ export default function Login() {
                   className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <div className="mb-4">
+              <div className="mb-4 relative">
                 <input
-                  type="password"
+                  type={isPasswordVisible ? "text" : "password"}
                   placeholder="Password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   autoComplete="on"
+                  onBlur={() => setIsPasswordVisible(false)}
+                  onAbort={() => setIsPasswordVisible(false)}
+                />
+                <FontAwesomeIcon
+                  icon={isPasswordVisible ? faEyeSlash : faEye}
+                  className="absolute right-3 top-3 cursor-pointer text-gray-500"
+                  onClick={togglePasswordVisibility}
                 />
               </div>
               <Link
@@ -165,6 +179,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
