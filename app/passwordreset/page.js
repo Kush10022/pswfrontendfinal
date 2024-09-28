@@ -178,6 +178,7 @@ const Page = () => {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   autoComplete="on"
+                  onBlur={() => setIsPasswordVisible(false)}
                   required
                 />
                 <FontAwesomeIcon
@@ -195,6 +196,7 @@ const Page = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   autoComplete="on"
+                  onBlur={() => setIsConfirmPasswordVisible(false)}
                   required
                 />
                 <FontAwesomeIcon
