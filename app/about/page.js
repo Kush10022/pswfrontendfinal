@@ -4,9 +4,9 @@ import { FaHeart, FaHandsHelping, FaAward, FaUserFriends} from 'react-icons/fa';
 
 const AboutPage = () => {
     const teamMembers = [
-        { name: 'Kush Patel', role: 'Founder & CEO' },
-        { name: 'Ujjval Patel', role: 'Co-founder & CTO' },
-        { name: 'Sumiksh Trehan', role: 'Co-founder & Lead Designer' }
+        { name: 'Kush Patel', role: 'Front-End Dev' },
+        { name: 'Ujjval Patel', role: 'B/E F/E and Database/ Storage Operations' },
+        { name: 'Sumiksh Trehan', role: 'F/E & Lead Designer' }
       ];
   return (
     <div className="font-sans bg-gray-100 p-8">
