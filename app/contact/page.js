@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useState } from 'react';
-import { AssitiveFetch } from '../lib/assitivefetch';
+import { AssitiveFetch } from '../lib/utils/assitivefetch';
 
 
 export default function Contact() {
