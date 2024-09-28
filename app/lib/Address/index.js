@@ -158,7 +158,7 @@ const AddressEditor = ({ Submit, Close }) => {
           <DynamicMap
             location={location}
             className="w-full h-full overflow-hidden"
-            extraTailwindCSSClass={"rounded-lg shadow-sm"}
+            extraTailwindCSSClass={"rounded-lg shadow-sm z-0"}
           />
         </div>
 
