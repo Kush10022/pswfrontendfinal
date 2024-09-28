@@ -47,7 +47,7 @@ const LoggedOutNav = () => {
 
       {/* Navbar Items */}
       <div className={`lg:flex ${expanded ? "block" : "hidden"}`}>
-        <ul className="flex flex-col lg:flex-row lg:space-x-6">
+        <ul className="flex flex-col lg:flex-row lg:space-x-6 my-auto">
           <li>
             <Link
               href="/login"
