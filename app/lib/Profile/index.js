@@ -35,8 +35,7 @@ export default function ProfilePage() {
   const [profilePicEdit, setProfilePicEdit] = useState(false);
   const [documentView, setDocumentView] = useState(false);
   const [imageUrl, setImageUrl] = useState(
-    user?.profilePicture ||
-      "/default-profile.jpg"
+    user?.profilePicture || "/default-profile.jpg"
   );
   const [document, setDocument] = useState(
     user?.document || "https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK"
@@ -244,7 +243,16 @@ export default function ProfilePage() {
 
   return (
     <div className="container mx-auto my-10 p-4 bg-white1 ">
-      <Modal open={open} onClose={onCloseModal} center>
+      <Modal
+        open={open}
+        onClose={onCloseModal}
+        center
+        styles={{
+          modal: {
+            marginTop: "10vh", // 10% from the top
+          },
+        }}
+      >
         {profilePicEdit && <ProfilePicUploader onDone={onCloseModal} />}
         {documentView && <PDFViewer fileUrl={document} />}
         {documentEdit && (
@@ -267,6 +275,7 @@ export default function ProfilePage() {
           center
           styles={{
             modal: {
+              marginTop: "10vh", // 10% from the top
               width: "80vw", // 80% of the viewport width
               maxWidth: "none", // Remove any max-width restrictions if needed
             },
