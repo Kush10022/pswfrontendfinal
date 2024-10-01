@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import Calendar from "react-calendar";
 import { useAtom } from "jotai";
-import { userProfileAtom } from "../../atoms/userAtom";
+import { userProfileAtom } from "../atoms";
 import { useRouter } from "next/navigation";
 import { Modal } from "react-responsive-modal";
 

@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useAtom } from "jotai";
-import { userProfileAtom } from "../../atoms/userAtom";
+import { userProfileAtom } from "../atoms";
 import styles from "../../../styling/profile.module.css";
 
 const LoggedOutNav = () => {

@@ -5,7 +5,7 @@ import "react-calendar/dist/Calendar.css"; // Import calendar styling
 import "../../../styling/calendar.css"; // Import custom CSS
 import Cookies from "js-cookie";
 import { useAtom } from "jotai";
-import { userProfileAtom } from "../../atoms/userAtom";
+import { userProfileAtom } from "../atoms";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 

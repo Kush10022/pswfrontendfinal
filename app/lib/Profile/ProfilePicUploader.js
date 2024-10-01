@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Cropper from "react-easy-crop";
 import Cookies from "js-cookie";
-import { userProfileAtom } from "../../atoms/userAtom";
+import { userProfileAtom } from "../atoms";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
