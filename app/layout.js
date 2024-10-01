@@ -12,10 +12,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body className="flex flex-col min-h-screen">
         <Toaster />
-        <Navigation />
-        <div className="pt-10 my-auto">{children}</div>
+        <Navigation className="sticky top-0 z-50" />
+        <div className="flex-grow pt-10">{children}</div>
       </body>
     </html>
   );

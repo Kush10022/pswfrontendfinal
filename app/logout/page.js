@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { destroyCookie } from "nookies";
 import { useAtom } from "jotai";
-import { userProfileAtom } from "../atoms/userAtom";
+import { userProfileAtom } from "../lib/atoms";
 import toast from "react-hot-toast";
 
 export default function Logout() {

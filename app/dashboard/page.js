@@ -2,12 +2,20 @@
 import React, { useEffect } from "react";
 import Cookies from "js-cookie";
 import { useAtom } from "jotai";
-import { userProfileAtom } from "../atoms/userAtom";
+import { userProfileAtom } from "../lib/atoms";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowLeft,
+  faMagnifyingGlassLocation,
+  faCalendarCheck,
+  faUser
+} from "@fortawesome/free-solid-svg-icons";
 
 // Default export function that returns a page object
 export default function DashboardPage() {
   // Use the userProfileAtom to get the user's profile data
   const [userProfile, setUserProfile] = useAtom(userProfileAtom);
+  const [isOpened, setIsOpened] = React.useState(false);
 
   useEffect(() => {
     const getUserObject = async () => {
@@ -30,73 +38,90 @@ export default function DashboardPage() {
   }, [userProfile, setUserProfile]);
 
   return (
-    <div className="font-sans">
-      {/* Hero Section with Personalized Greeting */}
-      <div className="bg-green-600 text-white text-center py-12 px-4">
-        <h1 className="text-5xl font-bold mb-3">
-          Welcome to PSW Support Finder
-        </h1>
-        <p className="text-2xl mb-4">Hi, {userProfile?.fname || "Guest"}</p>
-        <p className="text-lg mt-2 max-w-4xl mx-auto">
-          Connecting care seekers with professional Personal Support Workers.
-          Together, we create a community where quality care meets convenience
-          and compassion.
-        </p>
-      </div>
+    <div className="flex h-screen relative mt-3">
+      {/* Arrow Button for Sidebar */}
+      <button
+        onClick={() => setIsOpened(!isOpened)}
+        className={`fixed z-40 rounded-full px-2 mt-[6.5rem] bg-white border-green-600 border-2 hover:bg-green-200 shadow-sm transition-all duration-500 ease-in-out ${
+          isOpened ? "ml-[17rem]" : "ml-4"
+        }`}
+      >
+        <FontAwesomeIcon
+          icon={faArrowLeft}
+          className={`transition-transform duration-700 ease-in-out ${
+            isOpened ? "rotate-0" : "rotate-180"
+          }`}
+          size="md"
+          color="green"
+        />
+      </button>
 
-      {/* About Section */}
-      <div className="bg-white py-8 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-semibold mb-6">
-            Empowering Personal Support Workers
-          </h2>
-          <p className="text-gray-700">
-            At PSW Support Finder, we believe in empowering Personal Support
-            Workers by providing them with a platform to offer their essential
-            services to those in need. Whether it's assisting with daily living
-            activities, providing companionship, or specialized care, our PSWs
-            are dedicated to enhancing the quality of life for our clients.
-          </p>
+      {/* Side Navigation */}
+      <div
+        className={`h-full fixed top-0 left-0 bg-white shadow-md transition-all duration-500 ease-in-out ${
+          isOpened ? "w-72" : "w-16"
+        }`}
+      >
+        {/* User Profile Section */}
+        <div className="flex flex-col items-center mt-20 transition-all duration-500 ease-in-out hover:bg-emerald-100 p-3" >
+          <div className="flex items-center">
+            <FontAwesomeIcon
+              icon={faUser}
+              size="2x"
+              color="green"
+              className={`${isOpened ? "ml-3" : "ml-1"} transition-transform duration-700 ease-in-out`}
+            />
+            {isOpened && (
+              <span className="ml-3 text-lg font-bold text-gray-700 transition-opacity duration-700">
+                {userProfile?.fname} {userProfile?.lname}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Sidebar Items */}
+        <div className="flex flex-col mt-16 items-center">
+          {/* Search Item */}
+          <div className="flex items-center w-full p-3 hover:bg-emerald-100 transition-colors duration-500 ease-in-out cursor-pointer">
+            <FontAwesomeIcon
+              icon={faMagnifyingGlassLocation}
+              size="2x"
+              color="green"
+              className="transition-transform duration-700 ease-in-out"
+            />
+            {isOpened && (
+              <span className="ml-3 text-lg font-medium text-gray-700 transition-opacity duration-500 ease-in-out">
+                Search
+              </span>
+            )}
+          </div>
+
+          {/* Calendar Check Item */}
+          <div className="flex mt-1 items-center w-full p-3 hover:bg-emerald-100 transition-colors duration-500 ease-in-out cursor-pointer">
+            <FontAwesomeIcon
+              icon={faCalendarCheck}
+              size="2x"
+              color="green"
+              className="transition-transform duration-700 ease-in-out"
+            />
+            {isOpened && (
+              <span className="ml-3 text-lg font-medium text-gray-700 transition-opacity duration-500 ease-in-out">
+                Appointments
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Features Section */}
-      <div className="py-8 px-4">
-        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Feature 1 */}
-          <div className="bg-white shadow-lg rounded-lg p-6 text-center">
-            {/* <Image src="/path-to-feature-icon-1.svg" alt="Seamless Connections" width={64} height={64} className="mb-4 mx-auto"/> */}
-            <h4 className="text-xl font-semibold mb-2">Seamless Connections</h4>
-            <p>
-              Easily connect with available PSWs in your area through our
-              intuitive platform.
-            </p>
-          </div>
-          {/* Feature 2 */}
-          <div className="bg-white shadow-lg rounded-lg p-6 text-center">
-            {/* <img src="/path-to-feature2-image.jpg" alt="Feature 2" className="w-48 h-48 object-cover mb-4" />  */}
-            <h4 className="text-xl font-semibold mb-2">
-              Trusted Professionals
-            </h4>
-            <p>
-              Every PSW is thoroughly vetted to ensure the highest standard of
-              care and expertise.
-            </p>
-          </div>
-          {/* Add more features as needed */}
+      {/* Main Content */}
+      <div
+        className={`w-full h-full transition-all sticky duration-700 ${
+          isOpened ? "ml-72" : "ml-16"
+        }`}
+      >
+        <div className="flex flex-col items-center m-1">
+          <div className="mt-1"></div>
         </div>
-      </div>
-
-      {/* CTA Section */}
-      <div className="bg-green-600 text-white text-center py-8 px-4">
-        <h2 className="text-3xl font-bold mb-3">Join Our Community</h2>
-        <p className="mb-6">
-          Become a part of a growing network that values exceptional care and
-          support.
-        </p>
-        <button className="bg-white text-green-600 font-semibold py-2 px-4 rounded-full hover:bg-gray-100 transition duration-300">
-          Sign Up to newsletter
-        </button>
       </div>
     </div>
   );
