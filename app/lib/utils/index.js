@@ -38,8 +38,45 @@ const loginUsers = async(email, password) => {
     }
 }
 
+function constructSearchURL({ name, rate, day, radius, lat, lon }) {
+    try {
+      // Check if API URL is available
+      const baseURL = process.env.NEXT_PUBLIC_API_URL;
+      if (!baseURL) {
+        throw new Error('API base URL is missing in environment variables.');
+      }
+  
+      // Check for missing required parameters
+      if (!day || !radius || !lat || !lon) {
+        throw new Error('Missing required search parameters: day, radius, lat, or lon.');
+      }
+  
+      // Construct the URL with query parameters
+      const params = new URLSearchParams();
+  
+      // Add optional and required parameters
+      if (name) params.append('name', name);
+      if (rate) params.append('rate', rate);
+      params.append('day', day);
+      params.append('radius', radius);
+      params.append('lat', lat);
+      params.append('lon', lon);
+  
+      // Build the final URL
+      const url = `${baseURL}/v1/private/search?${params.toString()}`;
+      return url;
+  
+    } catch (error) {
+      console.error('Error constructing search URL:', error.message);
+      // Handle or return the error as necessary, e.g., show a notification or return null
+      return null; // Return null if an error occurs
+    }
+  }
+  
+
 
 export {
     AssitiveFetch,
-    loginUsers
+    loginUsers,
+    constructSearchURL
 }
