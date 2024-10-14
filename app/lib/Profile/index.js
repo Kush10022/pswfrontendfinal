@@ -242,7 +242,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="container mx-auto my-10 p-4 bg-white1 ">
+    <div className="container mx-auto mb-10 px-4 pb-4 bg-white1 ">
       <Modal
         open={open}
         onClose={onCloseModal}
@@ -334,7 +334,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Right Column */}
-        <div className="col-span-3 md:col-span-3 overflow-auto">
+        <div className="col-span-3 md:col-span-3 pt-3 overflow-auto">
           {/* Personal Info Section (Split into two side-by-side sections) */}
           <div className="bg-gray-100 p-4 rounded-md mb-4">
             <h2 className="text-lg font-bold mb-4">Personal Information</h2>
