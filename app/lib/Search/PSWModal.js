@@ -29,8 +29,8 @@ export default function PSWModal({ psw, onClose }) {
                 {/* Map Section */}
                 <div className="w-1/2 h-96 pr-4">
                     <MapContainer
-                        center={[psw.address.location.coordinates[0], psw.address.location.coordinates[1]]}
-                        zoom={11} // Zoomed out for a clearer view
+                        center={[psw.address.location.coordinates[1], psw.address.location.coordinates[0]]}
+                        zoom={18} // Zoomed out for a clearer view
                         style={{ height: "100%", width: "100%" }} // Make the map responsive
                         className="rounded-lg shadow-lg"
                     >
@@ -38,7 +38,7 @@ export default function PSWModal({ psw, onClose }) {
                             url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png"
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener noreferrer">CARTO</a>'
                         />
-                        <Marker position={[psw.address.location.coordinates[0], psw.address.location.coordinates[1]]}>
+                        <Marker position={[psw.address.location.coordinates[1], psw.address.location.coordinates[0]]}>
                             <Popup>
                                 <strong>{psw.name}</strong><br />
                                 {psw.address.address}
