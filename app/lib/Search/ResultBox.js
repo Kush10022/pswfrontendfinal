@@ -54,7 +54,7 @@ export default function ResultBox() {
   return (
     <div className="bg-white h-full max-h-[calc(100vh-100px)] p-4 rounded-lg w-full max-w-7xl mx-auto flex gap-4">
       {/* Left Container: Search results (1/3 width) */}
-      <div className="w-1/3 bg-gray-50 p-4 rounded-lg overflow-y-auto shadow-lg">
+      <div className="w-1/3 bg-gray-50 p-4 rounded-lg overflow-y-auto shadow-sm">
         {/* Header Row with Sorting */}
         <div className="flex justify-between items-center border-b border-gray-300 pb-2 mb-4">
           <div
@@ -102,7 +102,7 @@ export default function ResultBox() {
               <img
                 src={psw.profilePicture}
                 alt={psw.name}
-                className="w-12 h-12 rounded-full object-cover shadow-lg"
+                className="w-12 h-12 rounded-full object-cover shadow-sm"
               />
 
               {/* PSW Name and Rate in One Line */}
@@ -121,7 +121,7 @@ export default function ResultBox() {
       </div>
 
       {/* Right Container: Details Placeholder (2/3 width) */}
-      <div className="w-2/3 bg-gray-100 p-6 rounded-lg shadow-lg flex items-center justify-center text-gray-600">
+      <div className="w-2/3 bg-gray-100 p-6 rounded-lg shadow-sm flex items-center justify-center text-gray-600">
         {selectedPsw ? (
           <PSWCard psw={selectedPsw} />
         ) : (
