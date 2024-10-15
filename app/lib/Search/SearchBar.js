@@ -13,6 +13,7 @@ const SearchBar = ({ onSearch }) => {
   const [radius, setRadius] = useState(0);
   const [pswName, setPswName] = useState("");
   const [loading, setLoading] = useState(false); // Loading state for search button
+  const [locationLoading, setLocationLoading] = useState(false); // Loading for location switch
   const [userProfile] = useAtom(userProfileAtom);
   const [, setPsws] = useAtom(pswAtom);
   const [location, setLocation] = useState({
@@ -20,6 +21,7 @@ const SearchBar = ({ onSearch }) => {
     lon: 0,
   });
 
+  // Sync initial location with user profile (home location)
   useEffect(() => {
     if (userProfile) {
       setLocation({
@@ -29,20 +31,22 @@ const SearchBar = ({ onSearch }) => {
     }
   }, [userProfile]);
 
+  // Search PSWs with updated location
   const searchPSWs = async () => {
     setLoading(true); // Start loading
-    onSearch();
     const token = Cookies.get("authToken");
 
     if (!token) {
       console.error("User is not authenticated.");
       setLoading(false); // End loading
+      onSearch(); // Trigger parent component's search function
       return;
     }
 
     if (!location.lat || !location.lon) {
       console.error("Location is not set.");
       setLoading(false); // End loading
+      onSearch(); // Trigger parent component's search function
       return;
     }
 
@@ -74,35 +78,59 @@ const SearchBar = ({ onSearch }) => {
       console.log("Error during search", error);
     } finally {
       setLoading(false); // End loading
+      onSearch(); // Trigger parent component's search function
     }
   };
 
+  // Handle location switch between 'home' and 'current'
   const handleLocation = (e) => {
     setLocationType(e.target.value);
+    setLocationLoading(true); // Start location loading
+
     if (e.target.value === "current") {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          const { latitude, longitude } = position.coords;
-          setLocation({ lat: latitude, lon: longitude });
-        });
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            setLocation({ lat: latitude, lon: longitude });
+            setLocationLoading(false); // End location loading after setting location
+          },
+          (error) => {
+            console.error("Geolocation error:", error);
+            // Fallback to home location if geolocation fails
+            setLocation({
+              lat: userProfile?.address?.location?.coordinates[1],
+              lon: userProfile?.address?.location?.coordinates[0],
+            });
+            setLocationType("home");
+            setLocationLoading(false); // End location loading after fallback
+            alert("Unable to get current location. Using home location instead.");
+          },
+          {
+            timeout: 10000, // Set a timeout for geolocation to avoid indefinite wait
+          }
+        );
       } else {
+        console.error("Geolocation is not supported by this browser.");
         setLocation({
           lat: userProfile?.address?.location?.coordinates[1],
           lon: userProfile?.address?.location?.coordinates[0],
         });
         setLocationType("home");
-        console.error("Geolocation is not supported by this browser.");
+        setLocationLoading(false); // End location loading after fallback
+        alert("Geolocation not supported. Using home location instead.");
       }
     } else {
       setLocation({
         lat: userProfile?.address?.location?.coordinates[1],
         lon: userProfile?.address?.location?.coordinates[0],
       });
+      setLocationLoading(false); // End location loading
     }
   };
 
   return (
-    <div className="sticky top-0  rounded z-50 w-full max-w-7xl mx-auto">
+    <div className="sticky top-0 rounded z-50 w-full max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-between gap-4">
         {/* Location Input */}
         <div className="flex items-center w-full md:w-auto flex-grow bg-gray-100 p-3 rounded-md shadow-sm transition duration-300 hover:bg-gray-200 focus-within:bg-gray-200">
@@ -114,6 +142,7 @@ const SearchBar = ({ onSearch }) => {
             className="w-full md:w-auto border-none bg-transparent focus:outline-none text-gray-600"
             value={locationType}
             onChange={handleLocation}
+            disabled={locationLoading} // Disable while loading location
           >
             <option value="home">Search by Home Address</option>
             <option value="current">Search by Current Location</option>
@@ -187,12 +216,14 @@ const SearchBar = ({ onSearch }) => {
         {/* Search Button */}
         <button
           className={`flex items-center justify-center p-3 rounded-md shadow-sm w-full md:w-auto transition duration-300 ${
-            loading ? "bg-gray-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"
+            loading || locationLoading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-green-600 hover:bg-green-700"
           } text-white`}
           onClick={searchPSWs}
-          disabled={loading}
+          disabled={loading || locationLoading} // Disable if either loading state is true
         >
-          {loading ? (
+          {loading || locationLoading ? (
             <>
               <FontAwesomeIcon icon={faSpinner} className="animate-spin mr-2" />
               Searching...
