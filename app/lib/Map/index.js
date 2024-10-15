@@ -48,40 +48,6 @@ const calculateCenter = (psws) => {
   return [avgLatitude, avgLongitude];
 };
 
-// function MultiMarkerMap({ psws = [], zoom = 11 }) {
-//   let center = [];
-
-//   if (psws.length === 1 ) {
-//     center = [psws[0].latitude, psws[0].longitude];
-//   }
-//   else {
-//     center = calculateCenter(psws);
-//   }
-
-//   return (
-//     <MapContainer
-//       center={center}
-//       zoom={zoom}
-//       style={{ height: "100%", width: "100%" }}
-//     >
-//       <ChangeView center={center} zoom={zoom} />
-//       <TileLayer
-//         url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png"
-//         attribution='&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener noreferrer">CARTO</a>'
-//       />
-//       {psws.map((psw) => (
-//         <Marker key={psw.id} position={[psw.latitude, psw.longitude]}>
-//           <Popup>
-//             <div>
-//               <h1 className="text-lg font-bold">{psw.name}</h1>
-//               <p>{psw.description}</p>
-//             </div>
-//           </Popup>
-//         </Marker>
-//       ))}
-//     </MapContainer>
-//   );
-// }
 
 const MultiMarkerMap = ({psws}) => {
   const [center] = useState(calculateCenter(psws)); // Calculate initial center
