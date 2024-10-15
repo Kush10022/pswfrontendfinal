@@ -8,14 +8,32 @@ import {
   faArrowLeft,
   faMagnifyingGlassLocation,
   faCalendarCheck,
-  faUser
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/navigation";
+import Search from "../lib/Search";
+
+// // Custom loading spinner
+// function LoadingSpinner() {
+//   return (
+//     <div className="flex justify-center items-center h-screen">
+//       <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-500"></div>
+//       <span className="ml-4 text-lg font-semibold text-gray-700">Loading...</span>
+//     </div>
+//   );
+// }
 
 // Default export function that returns a page object
 export default function DashboardPage() {
   // Use the userProfileAtom to get the user's profile data
   const [userProfile, setUserProfile] = useAtom(userProfileAtom);
   const [isOpened, setIsOpened] = React.useState(false);
+  const [searchHover, setSearchHover] = React.useState(false);
+  const [calendarHover, setCalendarHover] = React.useState(false);
+  const [profileHover, setProfileHover] = React.useState(false);
+  const [searchSelected, setSearchSelected] = React.useState(true);
+
+  const router = useRouter();
 
   useEffect(() => {
     const getUserObject = async () => {
@@ -42,13 +60,13 @@ export default function DashboardPage() {
       {/* Arrow Button for Sidebar */}
       <button
         onClick={() => setIsOpened(!isOpened)}
-        className={`fixed z-40 rounded-full px-2 mt-[6.5rem] bg-white border-green-600 border-2 hover:bg-green-200 shadow-sm transition-all duration-500 ease-in-out ${
-          isOpened ? "ml-[17rem]" : "ml-4"
+        className={`fixed z-40 rounded-full px-2 mt-20 bg-white border-green-600 border-2 hover:bg-green-200 shadow-sm transition-all duration-500 ease-in-out ${
+          isOpened ? "ml-[15.4rem]" : "ml-6"
         }`}
       >
         <FontAwesomeIcon
           icon={faArrowLeft}
-          className={`transition-transform duration-700 ease-in-out ${
+          className={`transition-transform duration-500 ease-in-out ${
             isOpened ? "rotate-0" : "rotate-180"
           }`}
           size="md"
@@ -63,26 +81,50 @@ export default function DashboardPage() {
         }`}
       >
         {/* User Profile Section */}
-        <div className="flex flex-col items-center mt-20 transition-all duration-500 ease-in-out hover:bg-emerald-100 p-3" >
+        <div
+          className="flex flex-col items-center mt-20 transition-all hover:bg-emerald-100 selection:duration-500 ease-in-out  p-3 cursor-pointer"
+          onClick={() => {
+            router.push("/profile");
+          }}
+          onMouseEnter={() => setProfileHover(true)}
+          onMouseLeave={() => setProfileHover(false)}
+        >
           <div className="flex items-center">
             <FontAwesomeIcon
               icon={faUser}
               size="2x"
               color="green"
-              className={`${isOpened ? "ml-3" : "ml-1"} transition-transform duration-700 ease-in-out`}
+              className={`${
+                isOpened ? "ml-3" : "ml-1"
+              } transition-transform duration-700 ease-in-out`}
             />
             {isOpened && (
-              <span className="ml-3 text-lg font-bold text-gray-700 transition-opacity duration-700">
-                {userProfile?.fname} {userProfile?.lname}
+              <span className="ml-3 pr-4 text-lg font-bold text-gray-700 transition-opacity duration-700">
+                {userProfile?.fname}
+              </span>
+            )}
+            {!isOpened && profileHover && (
+              <span className="absolute left-[4.5rem] bg-gray-700 text-white text-sm rounded py-1 px-2 z-50 transition-all ease-in-out">
+                Profile
               </span>
             )}
           </div>
         </div>
 
         {/* Sidebar Items */}
-        <div className="flex flex-col mt-16 items-center">
+        <div
+          className={`flex flex-col mt-16 items-center gap-1 ${
+            isOpened ? "mx-2" : ""
+          }`}
+        >
           {/* Search Item */}
-          <div className="flex items-center w-full p-3 hover:bg-emerald-100 transition-colors duration-500 ease-in-out cursor-pointer">
+          <div
+            className={`flex relative items-center w-full p-3 hover:bg-emerald-100 transition-colors duration-500 ease-in-out cursor-pointer ${
+              isOpened ? "rounded-lg " : ""
+            }${searchSelected ? " bg-green-200" : ""}`}
+            onMouseEnter={() => setSearchHover(true)}
+            onMouseLeave={() => setSearchHover(false)}
+          >
             <FontAwesomeIcon
               icon={faMagnifyingGlassLocation}
               size="2x"
@@ -94,10 +136,21 @@ export default function DashboardPage() {
                 Search
               </span>
             )}
+            {!isOpened && searchHover && (
+              <span className="absolute left-[4.5rem] bg-gray-700 text-white text-sm rounded py-1 px-2 z-50 transition-all ease-in-out">
+                Search
+              </span>
+            )}
           </div>
 
           {/* Calendar Check Item */}
-          <div className="flex mt-1 items-center w-full p-3 hover:bg-emerald-100 transition-colors duration-500 ease-in-out cursor-pointer">
+          <div
+            className={`flex relative items-center w-full p-3 hover:bg-emerald-100 transition-colors duration-500 ease-in-out cursor-pointer ${
+              isOpened ? "rounded-lg" : ""
+            }`}
+            onMouseEnter={() => setCalendarHover(true)}
+            onMouseLeave={() => setCalendarHover(false)}
+          >
             <FontAwesomeIcon
               icon={faCalendarCheck}
               size="2x"
@@ -109,18 +162,27 @@ export default function DashboardPage() {
                 Appointments
               </span>
             )}
+            {!isOpened && calendarHover && (
+              <span className="absolute left-[4.5rem] bg-gray-700 text-white text-sm rounded py-1 px-2 z-50 transition-all ease-in-out">
+                Appointments
+              </span>
+            )}
           </div>
         </div>
       </div>
 
       {/* Main Content */}
       <div
-        className={`w-full h-full transition-all sticky duration-700 ${
+        className={`w-full transition-all duration-500 ${
           isOpened ? "ml-72" : "ml-16"
         }`}
       >
-        <div className="flex flex-col items-center m-1">
-          <div className="mt-1"></div>
+        {/* Center container */}
+        <div className="flex flex-col items-center justify-start min-h-screen">
+          {/* Inner content wrapper */}
+          <div className="text-center w-full py-1 mx-auto">
+            <Search />
+          </div>
         </div>
       </div>
     </div>
