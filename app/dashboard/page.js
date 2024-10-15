@@ -13,7 +13,6 @@ import {
 import { useRouter } from "next/navigation";
 import Search from "../lib/Search";
 
-
 // // Custom loading spinner
 // function LoadingSpinner() {
 //   return (
@@ -24,7 +23,6 @@ import Search from "../lib/Search";
 //   );
 // }
 
-
 // Default export function that returns a page object
 export default function DashboardPage() {
   // Use the userProfileAtom to get the user's profile data
@@ -33,6 +31,7 @@ export default function DashboardPage() {
   const [searchHover, setSearchHover] = React.useState(false);
   const [calendarHover, setCalendarHover] = React.useState(false);
   const [profileHover, setProfileHover] = React.useState(false);
+  const [searchSelected, setSearchSelected] = React.useState(true);
 
   const router = useRouter();
 
@@ -121,8 +120,8 @@ export default function DashboardPage() {
           {/* Search Item */}
           <div
             className={`flex relative items-center w-full p-3 hover:bg-emerald-100 transition-colors duration-500 ease-in-out cursor-pointer ${
-              isOpened ? "rounded-lg" : ""
-            }`}
+              isOpened ? "rounded-lg " : ""
+            }${searchSelected ? " bg-green-200" : ""}`}
             onMouseEnter={() => setSearchHover(true)}
             onMouseLeave={() => setSearchHover(false)}
           >
@@ -179,9 +178,9 @@ export default function DashboardPage() {
         }`}
       >
         {/* Center container */}
-        <div className="flex flex-col items-center justify-center min-h-screen">
+        <div className="flex flex-col items-center justify-start min-h-screen">
           {/* Inner content wrapper */}
-          <div className="text-center w-full py-6 mx-auto fixed">
+          <div className="text-center w-full py-1 mx-auto">
             <Search />
           </div>
         </div>
