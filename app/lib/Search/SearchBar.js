@@ -5,6 +5,7 @@ import { useAtom } from "jotai";
 import { pswAtom, userProfileAtom } from "../atoms";
 import Cookies from "js-cookie";
 import { constructSearchURL } from "../utils";
+import toast from "react-hot-toast";
 
 const SearchBar = ({ onSearch }) => {
   const [locationType, setLocationType] = useState("home"); // Can be 'current' or 'home'
@@ -70,7 +71,7 @@ const SearchBar = ({ onSearch }) => {
       });
       const responseData = await response.json();
       if (responseData.users.length === 0) {
-        console.log("No PSWs found.");
+        setPsws([]);
       } else {
         setPsws(responseData.users);
       }
@@ -88,12 +89,14 @@ const SearchBar = ({ onSearch }) => {
     setLocationLoading(true); // Start location loading
 
     if (e.target.value === "current") {
+      const toastId = toast.loading("Getting current location...")
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
             setLocation({ lat: latitude, lon: longitude });
             setLocationLoading(false); // End location loading after setting location
+            toast.success("Current location retrieved.", { id: toastId});
           },
           (error) => {
             console.error("Geolocation error:", error);
@@ -104,7 +107,7 @@ const SearchBar = ({ onSearch }) => {
             });
             setLocationType("home");
             setLocationLoading(false); // End location loading after fallback
-            alert("Unable to get current location. Using home location instead.");
+            toast.error("Failed to retrieve current location. Using home location instead.", { id: toastId});
           },
           {
             timeout: 10000, // Set a timeout for geolocation to avoid indefinite wait
@@ -118,7 +121,7 @@ const SearchBar = ({ onSearch }) => {
         });
         setLocationType("home");
         setLocationLoading(false); // End location loading after fallback
-        alert("Geolocation not supported. Using home location instead.");
+        toast.error("Geolocation is not supported by this browser. Using home location instead.", { id: toastId});
       }
     } else {
       setLocation({
