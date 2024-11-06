@@ -6,13 +6,17 @@ import { PDFViewer } from "../Profile/PDFViewer";
 import { Modal } from "react-responsive-modal";
 import { FaBookOpen, FaCalendarAlt } from "react-icons/fa"; // Importing icons
 import "react-responsive-modal/styles.css"; // Importing the required CSS for the modal
+import CheckoutForm from "../Checkout/CheckoutForm";
 
 export default function PSWCard({ psw }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
 
   // Handle booking action
   const handleBooking = () => {
-    toast.success("Booking confirmed!");
+    // toast.success("Booking confirmed!");
+    setIsCheckoutModalOpen(true);
+
   };
 
   // Open modal to view PSW's document
@@ -23,6 +27,10 @@ export default function PSWCard({ psw }) {
   // Close modal
   const closeResumeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const closeCheckoutModal = () => {
+    setIsCheckoutModalOpen(false);
   };
 
   const { profilePicture, name, rate, email, skills, address, document } = psw;
@@ -97,6 +105,21 @@ export default function PSWCard({ psw }) {
         <div className="w-full h-[80vh]">
           <PDFViewer fileUrl={document} />
         </div>
+      </Modal>
+      <Modal
+        open={isCheckoutModalOpen}
+        onClose={closeCheckoutModal}
+        center
+        styles={{
+          modal: {
+            maxWidth: "600px", // Set a larger max width
+            width: "90%", // Take up more of the screen width
+            padding: "20px", // Add some padding inside the modal
+          },
+        }}
+      >
+        {/* <h2 className="text-3xl font-bold mb-4 text-center">Checkout</h2> */}
+        <CheckoutForm rate={rate} />
       </Modal>
     </div>
   );
