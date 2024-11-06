@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import toast from "react-hot-toast";
 
-const CheckoutForm = ({ rate }) => {
+const CheckoutForm = ({ rate, onPaymentSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [zip, setZip] = useState("");
+  // const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    // setIsProcessing(true);
 
     if (!stripe || !elements) {
       return;
@@ -36,15 +39,19 @@ const CheckoutForm = ({ rate }) => {
       });
 
       if (error) {
-        console.error("Payment failed:", error);
-        alert("Payment failed. Please try again.");
+        //console.error("Payment failed:", error);
+        //alert("Payment failed. Please try again.");
+        toast.error("Payment failed. Please try again.");
       } else if (paymentIntent.status === "succeeded") {
-        console.log("Payment successful:", paymentIntent);
-        alert("Payment successful! Thank you for your booking.");
+        //console.log("Payment successful:", paymentIntent);
+        //alert("Payment successful! Thank you for your booking.");
+        toast.success("Payment successful! Thank you for your booking.");
+        onPaymentSuccess();
       }
     } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred. Please try again.");
+      //console.error("Error:", error);
+      //alert("An error occurred. Please try again.");
+      toast.error("An error occurred. Please try again.");
     }
   };
 
