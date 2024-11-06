@@ -6,9 +6,12 @@ const CheckoutForm = ({ rate, onPaymentSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [zip, setZip] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsProcessing(true);
 
     if (!stripe || !elements) {
       return;
@@ -44,15 +47,17 @@ const CheckoutForm = ({ rate, onPaymentSuccess }) => {
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
+    }finally {
+      setIsProcessing(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto">
-      <h2 className="text-3xl font-bold mb-6 text-center">Checkout</h2>
+    <form onSubmit={handleSubmit} className="w-full max-w-lg mx-auto bg-white p-6 rounded-lg shadow-lg">
+      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Checkout</h2>
       <div className="mb-4">
         <label className="block text-gray-700 font-medium mb-2">Card Details</label>
-        <div className="p-3 border border-gray-300 rounded-md">
+        <div className="p-3 border border-gray-300 rounded-md shadow-sm bg-gray-50">
           <CardElement
             options={{
               style: {
@@ -69,17 +74,17 @@ const CheckoutForm = ({ rate, onPaymentSuccess }) => {
         <label className="block text-gray-700 font-medium mb-2">ZIP Code</label>
         <input
           type="text"
-          value={zip}
-          onChange={(e) => setZip(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md w-full"
+          className="p-3 border border-gray-300 rounded-md w-full shadow-sm bg-gray-50 focus:border-green-500 focus:ring focus:ring-green-200 transition"
           placeholder="ZIP Code"
+          required
         />
       </div>
       <button
         type="submit"
-        className="w-full bg-green-500 text-white py-3 rounded-md font-semibold hover:bg-green-600 transition"
+        disabled={!stripe || isProcessing}
+        className="w-full bg-green-500 text-white py-3 rounded-md font-semibold hover:bg-green-600 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-50"
       >
-        Pay ${rate}
+        {isProcessing ? "Processing..." : `Pay $${rate}`}
       </button>
     </form>
   );
