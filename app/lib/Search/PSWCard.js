@@ -119,7 +119,7 @@ export default function PSWCard({ psw }) {
         }}
       >
         {/* <h2 className="text-3xl font-bold mb-4 text-center">Checkout</h2> */}
-        <CheckoutForm rate={rate} />
+        <CheckoutForm rate={rate} onPaymentSuccess={closeCheckoutModal} />
       </Modal>
     </div>
   );
