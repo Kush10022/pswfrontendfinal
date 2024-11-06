@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY); // Make sure to use your Stripe secret key
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY); 
 
 export async function POST(req) {
   try {
@@ -8,7 +8,7 @@ export async function POST(req) {
     // Create a PaymentIntent with the specified amount
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
-      currency: "cad", // Use the appropriate currency for your app
+      currency: "cad", // Canadian Dollars
       payment_method_types: ["card"],
     });
 
