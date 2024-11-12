@@ -19,7 +19,6 @@ export const config = {
     "/dashboard/:path*",
     "/profile/:path*",
     "/about/:path*",
-    "/services/:path*",
     "/contact/:path*",
   ],
 };
