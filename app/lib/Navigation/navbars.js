@@ -150,13 +150,6 @@ const LoggedInNav = () => {
           Home
         </Link>
         <Link
-          href="/services"
-          className="py-2 px-2 text-slate-50 font-semibold hover:text-green-500 transition duration-300 no-underline"
-          onClick={() => setDropdownOpen(false)}
-        >
-          Services
-        </Link>
-        <Link
           href="/about"
           className="py-2 px-2 text-slate-50 font-semibold hover:text-green-500 transition duration-300 no-underline"
           onClick={() => setDropdownOpen(false)}
@@ -258,13 +251,6 @@ const LoggedInNav = () => {
             onClick={() => setIsMobileMenuOpen(false)} // Close the mobile menu after clicking
           >
             Home
-          </Link>
-          <Link
-            href="/services"
-            className="py-2 px-2 text-slate-50 font-semibold hover:text-green-500 transition duration-300 no-underline"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Services
           </Link>
           <Link
             href="/about"
