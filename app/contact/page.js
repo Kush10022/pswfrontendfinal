@@ -5,12 +5,13 @@ import { AssitiveFetch } from "../lib/utils/assitivefetch";
 import { useAtom } from "jotai";
 import { userProfileAtom } from "../lib/atoms";
 import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 // import { JsonWebTokenError } from "jsonwebtoken";
 export default function Contact() {
   const [userProfile] = useAtom(userProfileAtom);
   const token = Cookies.get("authToken");
-
+    const [isSending, setIsSending] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,21 +37,38 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = { name, email, message };
-    
-    // await AssitiveFetch(
-    //   `${process.env.NEXT_PUBLIC_API_URL}/v1/private/sendemail`,
-    //   "POST",
-    //   payload
-    // );
+    setIsSending(true);
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/private/sendemail`, {
-      method: "POST",
-      headers: {
-        Authorization: `JWT ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload)
-    });
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v1/private/sendemail`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `JWT ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+      const responseData = await response.json();
+      if (responseData.status === "ok") {
+        toast.success("Message sent successfully");
+        setFormData({
+          name: userProfile.fname + " " + userProfile.lname,
+          email: userProfile.email,
+          message: "",
+        });
+        setIsSending(false);
+      } else {
+        toast.error("Failed to send message");
+        setIsSending(false);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to send message");
+      setIsSending(false);
+    }
   };
 
   return (
@@ -124,10 +142,11 @@ export default function Contact() {
 
                   <div className="text-center mt-6">
                     <button
-                      className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
-                      type="submit"
+                      className={`${isSending ? "bg-emerald-300 cursor-progress": "bg-emerald-500"} text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full`}
+                      type="submit" 
                     >
-                      Submit
+                        <button type="button" className={`${isSending ? " cursor-progress": ""}`}>{isSending ? "Sending..." : "Send"}</button>
+    
                     </button>
                   </div>
                 </form>
