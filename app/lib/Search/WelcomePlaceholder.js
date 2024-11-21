@@ -1,8 +1,14 @@
 import React from "react";
-
+import { useAtom } from "jotai";
+import { userProfileAtom } from "../../lib/atoms";
 // WelcomePlaceholder Component with Tailwind and animations
 export default function WelcomePlaceholder() {
-  return (
+  const [userProfile] = useAtom(userProfileAtom);
+
+  return ( 
+    userProfile && userProfile.isPSW ? (
+      <div>"I am PSW. Bookings will be shown here!"</div>
+    ) : (
     <div className="flex flex-col items-center justify-center h-full text-center text-gray-700 animate-fadeIn">
       {/* Animated Search Icon */}
       <div className="animate-bounce mb-6">
@@ -34,5 +40,6 @@ export default function WelcomePlaceholder() {
         Start by entering your search criteria above!
       </div>
     </div>
+    ) 
   );
 }

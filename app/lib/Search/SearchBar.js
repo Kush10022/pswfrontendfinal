@@ -133,6 +133,9 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
+    userProfile && userProfile.isPSW ? (
+      <div>For future</div>
+    ) : (
     <div className="sticky top-0 rounded z-50 w-full max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row md:flex-wrap items-center justify-between gap-4">
         {/* Location Input */}
@@ -240,7 +243,8 @@ const SearchBar = ({ onSearch }) => {
         </button>
       </div>
     </div>
-  );
+    )
+    )
 };
 
 export { SearchBar };

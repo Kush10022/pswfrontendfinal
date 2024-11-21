@@ -49,6 +49,7 @@ export default function DashboardPage() {
       );
       const responseData = await response.json();
       setUserProfile(responseData.user);
+
     };
     if (userProfile == undefined) {
       getUserObject();
@@ -118,30 +119,32 @@ export default function DashboardPage() {
           }`}
         >
           {/* Search Item */}
-          <div
-            className={`flex relative items-center w-full p-3 hover:bg-emerald-100 transition-colors duration-500 ease-in-out cursor-pointer ${
-              isOpened ? "rounded-lg " : ""
-            }${searchSelected ? " bg-green-200" : ""}`}
-            onMouseEnter={() => setSearchHover(true)}
-            onMouseLeave={() => setSearchHover(false)}
-          >
-            <FontAwesomeIcon
-              icon={faMagnifyingGlassLocation}
-              size="2x"
-              color="green"
-              className="transition-transform duration-700 ease-in-out"
-            />
-            {isOpened && (
-              <span className="ml-3 text-lg font-medium text-gray-700 transition-opacity duration-500 ease-in-out">
-                Search
-              </span>
-            )}
-            {!isOpened && searchHover && (
-              <span className="absolute left-[4.5rem] bg-gray-700 text-white text-sm rounded py-1 px-2 z-50 transition-all ease-in-out">
-                Search
-              </span>
-            )}
-          </div>
+          {userProfile && userProfile.isPSW == false && (
+            <div
+              className={`flex relative items-center w-full p-3 hover:bg-emerald-100 transition-colors duration-500 ease-in-out cursor-pointer ${
+                isOpened ? "rounded-lg " : ""
+              }${searchSelected ? " bg-green-200" : ""}`}
+              onMouseEnter={() => setSearchHover(true)}
+              onMouseLeave={() => setSearchHover(false)}
+            >
+              <FontAwesomeIcon
+                icon={faMagnifyingGlassLocation}
+                size="2x"
+                color="green"
+                className="transition-transform duration-700 ease-in-out"
+              />
+              {isOpened && (
+                <span className="ml-3 text-lg font-medium text-gray-700 transition-opacity duration-500 ease-in-out">
+                  Search
+                </span>
+              )}
+              {!isOpened && searchHover && (
+                <span className="absolute left-[4.5rem] bg-gray-700 text-white text-sm rounded py-1 px-2 z-50 transition-all ease-in-out">
+                  Search
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Calendar Check Item */}
           <div
