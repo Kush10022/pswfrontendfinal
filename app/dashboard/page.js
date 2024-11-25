@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 import Search from "../lib/Search";
+import Appointments from "../lib/Appointments";
 
 
 // Default export function that returns a page object
@@ -172,7 +173,7 @@ export default function DashboardPage() {
           {/* Inner content wrapper */}
           <div className="text-center w-full py-1 mx-auto">
             {!userProfile?.isPSW && searchSelected && <Search />}
-            {(userProfile?.isPSW || !searchSelected) && <h1 className="text-2xl font-bold text-gray-700 mt-30">Welcome to the Dashboard </h1>}
+            {(userProfile?.isPSW || !searchSelected) && <Appointments userType={userProfile?.isPSW ? "PSW" : "Client"}/>}
           </div>
         </div>
       </div>
