@@ -10,6 +10,7 @@ export async function POST(req) {
       email,
       limit: 1,
     });
+    console.log("existing" ,existingCustomers);
 
     let customer;
     if (existingCustomers.data.length > 0) {
@@ -24,6 +25,7 @@ export async function POST(req) {
       });
     }
 
+    console.log(customer);
     // Step 2: Attach the payment method to the customer
     await stripe.paymentMethods.attach(paymentMethodId, {
       customer: customer.id,
