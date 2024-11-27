@@ -99,7 +99,7 @@ const Appointments = ({ userType }) => {
           events={bookings}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: 500 }}
+          style={{ height: 410 }}
           views={["month"]} // Restrict to Month view
           date={currentDate} // Controlled date for navigation
           onNavigate={() => {}} // Disable default navigation
