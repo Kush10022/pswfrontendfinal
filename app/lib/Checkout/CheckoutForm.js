@@ -3,7 +3,7 @@ import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import Modal from "react-responsive-modal";
 import toast from "react-hot-toast";
 import { useAtom } from "jotai";
-import { userProfileAtom } from "../atoms";
+import { userProfileAtom, serachParamsAtom } from "../atoms";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
@@ -20,7 +20,8 @@ function LoadingSpinner() {
 }
 
 
-const CheckoutForm = ({ rate, onPaymentSuccess }) => {
+const CheckoutForm = ({ rate, onPaymentSuccess, currPsw }) => {
+  const [searchParams, setSearchParams] = useAtom(serachParamsAtom);
   const stripe = useStripe();
   const router = useRouter();
   const elements = useElements();
@@ -63,6 +64,10 @@ const CheckoutForm = ({ rate, onPaymentSuccess }) => {
 
   useEffect(() => {
     if (refresh) {
+      console.log("Refreshing cards...");
+      console.log("Refresh:", refresh);
+      console.log("User Profile:", userProfile);
+      console.log("Cards:", cards);
       setRefresh(false);
       retriveCards();
       router.refresh();
@@ -127,6 +132,7 @@ const CheckoutForm = ({ rate, onPaymentSuccess }) => {
     setSelectedPaymentAmount(`Paying with card ending in ${last4}.`);
     setUseCard(paymentId);
 
+
     try {
       const response = await fetch("/api/create-customer-and-payment-intent", {
         method: "POST",
@@ -155,23 +161,62 @@ const CheckoutForm = ({ rate, onPaymentSuccess }) => {
     } catch (error) {
       toast.error("An error occurred. Please try again.");
     } finally {
+
+      setSelectedPaymentAmount(null);
+    }
+    const toastId = toast.loading("Booking in progress...");
+    try {
+
+      const jwtToken = Cookies.get("authToken");
+
+      const bookingData = {
+        pswEmail: currPsw?.email,
+        pswName: currPsw?.name,
+        pswAddress: currPsw?.address.address,
+        pswLocation: currPsw?.address.location,
+        pswAppointmentDate: searchParams.day,
+        clientEmail: userProfile?.email,
+        clientName: userProfile?.fname + " " + userProfile?.lname,
+        pswRate: currPsw?.rate
+      }
+      console.log("Booking Data: ", bookingData);
+      const currResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/booking`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${jwtToken}`,
+        },
+        body: JSON.stringify({ paymentCard: paymentMethod.id, bookingData: bookingData }),
+      });
+      const currdata = await currResponse.json();
+      console.log("Booking Response: ", currdata);
+
+      toast.success("Booking confirmed!, Check your Email for Confirmation", { id: toastId });
+
+    } catch (error) {
+
+      toast.error("An error occurred. Please try again.", { id: toastId });
+
+    }
+    finally {
       setIsProcessing(false);
       setSelectedPaymentAmount(null);
     }
+
   };
 
   const handleRemoveCard = async (paymentId) => {
     setIsProcessing(true);
     console.log("Payment ID:", paymentId);
     console.log("User Email:", userEmail);
-    try {  
+    try {
       // Call the Next.js API to remove the card
       const response = await fetch("/api/remove-card", {
         method: "DELETE",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ paymentMethodId: paymentId, email: userEmail }),
       });
-  
+
       if (response.status === 200) {
         const { updatedCards } = await response.json();
         const currUser = { ...userProfile, cards: updatedCards };
@@ -225,7 +270,7 @@ const CheckoutForm = ({ rate, onPaymentSuccess }) => {
                   className={`px-4 py-2 rounded-md font-semibold transition duration-300 ${isProcessing && useCard === card.paymentId
                     ? "bg-gray-400 text-white cursor-not-allowed"
                     : "bg-green-500 text-white hover:bg-green-600"
-                  }`}
+                    }`}
                   onClick={() => handleUseCard(card.paymentId, card.last4)}
                   disabled={isProcessing}
                 >

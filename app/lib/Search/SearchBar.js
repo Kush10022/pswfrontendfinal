@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationArrow, faSearch, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { useAtom } from "jotai";
-import { pswAtom, userProfileAtom } from "../atoms";
+import { pswAtom, userProfileAtom, serachParamsAtom } from "../atoms";
 import Cookies from "js-cookie";
 import { constructSearchURL } from "../utils";
 import toast from "react-hot-toast";
+
 
 const SearchBar = ({ onSearch }) => {
   const [locationType, setLocationType] = useState("home"); // Can be 'current' or 'home'
@@ -17,6 +18,7 @@ const SearchBar = ({ onSearch }) => {
   const [locationLoading, setLocationLoading] = useState(false); // Loading for location switch
   const [userProfile] = useAtom(userProfileAtom);
   const [, setPsws] = useAtom(pswAtom);
+  const [, setSearchParams] = useAtom(serachParamsAtom);
   const [location, setLocation] = useState({
     lat: 0,
     lon: 0,
@@ -61,6 +63,7 @@ const SearchBar = ({ onSearch }) => {
     };
 
     const searchURL = constructSearchURL(param);
+    setSearchParams(param);
 
     try {
       const response = await fetch(searchURL, {

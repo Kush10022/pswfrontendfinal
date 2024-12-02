@@ -16,6 +16,7 @@ export default function PSWCard({ psw }) {
   const handleBooking = () => {
     // toast.success("Booking confirmed!");
     setIsCheckoutModalOpen(true);
+    
 
   };
 
@@ -119,7 +120,7 @@ export default function PSWCard({ psw }) {
         }}
       >
         {/* <h2 className="text-3xl font-bold mb-4 text-center">Checkout</h2> */}
-        <CheckoutForm rate={rate} onPaymentSuccess={closeCheckoutModal} />
+        <CheckoutForm rate={rate} onPaymentSuccess={closeCheckoutModal  } currPsw={psw} />
       </Modal>
     </div>
   );

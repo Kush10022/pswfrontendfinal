@@ -11,8 +11,8 @@ const Appointments = ({ userType }) => {
     {
       id: 1,
       title: "Client: Alice (Home Care)",
-      start: new Date(2024, 10, 25),
-      end: new Date(2024, 10, 25),
+      start: new Date(2024, 11, 25),
+      end: new Date(2024, 11, 25),
       clientName: "Alice",
       pswName: "John Doe",
       service: "Home Care",
@@ -21,8 +21,8 @@ const Appointments = ({ userType }) => {
     {
       id: 2,
       title: "Client: Bob (Physiotherapy)",
-      start: new Date(2024, 10, 26),
-      end: new Date(2024, 10, 26),
+      start: new Date(2024, 11, 26),
+      end: new Date(2024, 11, 26),
       clientName: "Bob",
       pswName: "Jane Smith",
       service: "Physiotherapy",
@@ -31,8 +31,8 @@ const Appointments = ({ userType }) => {
     {
       id: 3,
       title: "Client: Charlie (Elderly Assistance)",
-      start: new Date(2024, 10, 27),
-      end: new Date(2024, 10, 27),
+      start: new Date(2024, 11, 27),
+      end: new Date(2024, 11, 27),
       clientName: "Charlie",
       pswName: "Mike Brown",
       service: "Elderly Assistance",
@@ -41,8 +41,8 @@ const Appointments = ({ userType }) => {
     {
       id: 4,
       title: "Client: David (Companionship)",
-      start: new Date(2024, 10, 28),
-      end: new Date(2024, 10, 28),
+      start: new Date(2024, 11, 28),
+      end: new Date(2024, 11, 28),
       clientName: "David",
       pswName: "Anna White",
       service: "Companionship",
@@ -99,7 +99,7 @@ const Appointments = ({ userType }) => {
           events={bookings}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: 410 }}
+          style={{ height: 400 }}
           views={["month"]} // Restrict to Month view
           date={currentDate} // Controlled date for navigation
           onNavigate={() => {}} // Disable default navigation
