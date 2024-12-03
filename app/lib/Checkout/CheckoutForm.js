@@ -59,18 +59,25 @@ const CheckoutForm = ({ rate, onPaymentSuccess, currPsw }) => {
         setCardLoading(false);
       }
     }
+    else if (userProfile?.cards?.length === 0) {
+      setCards([]);
+    }
     setCardLoading(false);
   };
 
   useEffect(() => {
     if (refresh) {
+      // console.log("Refreshing cards...");
+      // console.log("Refresh:", refresh);
+      // console.log("User Profile:", userProfile);
+      // console.log("Cards:", cards);
+      setRefresh(false);
+      retriveCards();
+      router.refresh();
       console.log("Refreshing cards...");
       console.log("Refresh:", refresh);
       console.log("User Profile:", userProfile);
       console.log("Cards:", cards);
-      setRefresh(false);
-      retriveCards();
-      router.refresh();
     }
   }, [refresh]);
 
@@ -151,6 +158,39 @@ const CheckoutForm = ({ rate, onPaymentSuccess, currPsw }) => {
 
       const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret);
 
+      // toast.success("Payment successful! Proceeding with booking.");
+      
+      // Proceed with booking after successful payment
+      const jwtToken = Cookies.get("authToken");
+      const bookingData = {
+        pswEmail: currPsw?.email,
+        pswName: currPsw?.name,
+        pswAppointmentDate: searchParams.day,
+        clientEmail: userProfile?.email,
+        appointmentAddress: userProfile?.address.address,
+        appointmentLocation: userProfile?.address.location,
+        clientName: `${userProfile?.fname} ${userProfile?.lname}`,
+        pswRate: currPsw?.rate,
+      };
+    
+      const bookingResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/booking`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${jwtToken}`,
+        },
+        body: JSON.stringify({ paymentCard: paymentId, bookingData }),
+      });
+    
+      const bookingResult = await bookingResponse.json();
+      console.log("Booking Response:", bookingResult);
+      
+      if (bookingResponse.status !== 200) {
+        throw new Error("Failed to complete booking.");
+      }
+      
+      // toast.success("Booking confirmed! Check your email for details.");
+
       if (confirmError) {
         console.error("Payment Error:", confirmError.message);
         toast.error(`Payment failed: ${confirmError.message}`);
@@ -160,43 +200,6 @@ const CheckoutForm = ({ rate, onPaymentSuccess, currPsw }) => {
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
-    } finally {
-
-      setSelectedPaymentAmount(null);
-    }
-    const toastId = toast.loading("Booking in progress...");
-    try {
-
-      const jwtToken = Cookies.get("authToken");
-
-      const bookingData = {
-        pswEmail: currPsw?.email,
-        pswName: currPsw?.name,
-        pswAddress: currPsw?.address.address,
-        pswLocation: currPsw?.address.location,
-        pswAppointmentDate: searchParams.day,
-        clientEmail: userProfile?.email,
-        clientName: userProfile?.fname + " " + userProfile?.lname,
-        pswRate: currPsw?.rate
-      }
-      console.log("Booking Data: ", bookingData);
-      const currResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/booking`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `JWT ${jwtToken}`,
-        },
-        body: JSON.stringify({ paymentCard: paymentMethod.id, bookingData: bookingData }),
-      });
-      const currdata = await currResponse.json();
-      console.log("Booking Response: ", currdata);
-
-      toast.success("Booking confirmed!, Check your Email for Confirmation", { id: toastId });
-
-    } catch (error) {
-
-      toast.error("An error occurred. Please try again.", { id: toastId });
-
     }
     finally {
       setIsProcessing(false);
