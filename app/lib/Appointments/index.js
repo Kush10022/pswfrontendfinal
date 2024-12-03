@@ -2,49 +2,9 @@ import React, { useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { userProfileAtom } from "../atoms";
 import { useAtom } from "jotai";
-
-/**
- * Converts the array of booking objects into the required format for react-big-calendar
- * @param {Array} bookingsArray - The original array of booking objects
- * @param {string} userType - Either "PSW" or "Client"
- * @returns {Array} An array of calendar events
- */
-const convertBookingsToEvents = (bookingsArray, userType) => {
-  if (!bookingsArray) return [];
-  return bookingsArray.map((booking) => {
-    const { appointmentDate, client, psw, duration } = booking;
-
-    // Convert appointmentDate to Date object
-    const startDate = new Date(appointmentDate);
-    const endDate = new Date(startDate.getTime() + duration * 60000); // Add duration (in minutes)
-
-    return {
-      id: booking._id,
-      title:
-        userType === "PSW"
-          ? `Client: ${client.name} (${client.email})`
-          : `PSW: ${psw.name} (${psw.email})`,
-      start: startDate,
-      end: endDate,
-      details: {
-        email: userType === "PSW" ? client.email : psw.email,
-        name: userType === "PSW" ? client.name : psw.name,
-        rate: userType === "PSW" ? psw.rate : client.rate,
-        picture: userType === "PSW" ? client.picture : psw.picture,
-        address: booking.address.fullAddress,
-        location: booking.address.location.coordinates,
-        document: psw.document,
-        bookingId: booking.bookingId,
-        status: booking.status,
-        duration: booking.duration,
-      },
-    };
-  });
-};
-
+import { convertBookingsToEvents } from "../utils";
 
 const Appointments = ({ userType }) => { 
   const [userProfile] = useAtom(userProfileAtom);
@@ -145,27 +105,6 @@ const Appointments = ({ userType }) => {
                     </>
                   )}
                 </div>
-
-                {userType === "PSW" && (
-                  <div className="flex-1">
-                    <MapContainer
-                      center={[
-                        selectedBooking.details.location[1],
-                        selectedBooking.details.location[0],
-                      ]}
-                      zoom={13}
-                      style={{ height: "300px", width: "100%" }}
-                    >
-                      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                      <Marker
-                        position={[
-                          selectedBooking.details.location[1],
-                          selectedBooking.details.location[0],
-                        ]}
-                      />
-                    </MapContainer>
-                  </div>
-                )}
               </div>
               <button
                 className="px-4 py-2 mt-4 bg-gray-500 text-white rounded hover:bg-gray-600"
