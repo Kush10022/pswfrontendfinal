@@ -3,7 +3,7 @@ import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import Modal from "react-responsive-modal";
 import toast from "react-hot-toast";
 import { useAtom } from "jotai";
-import { userProfileAtom } from "../atoms";
+import { userProfileAtom, serachParamsAtom } from "../atoms";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
@@ -20,7 +20,8 @@ function LoadingSpinner() {
 }
 
 
-const CheckoutForm = ({ rate, onPaymentSuccess }) => {
+const CheckoutForm = ({ rate, onPaymentSuccess, currPsw }) => {
+  const [searchParams, setSearchParams] = useAtom(serachParamsAtom);
   const stripe = useStripe();
   const router = useRouter();
   const elements = useElements();
@@ -58,14 +59,25 @@ const CheckoutForm = ({ rate, onPaymentSuccess }) => {
         setCardLoading(false);
       }
     }
+    else if (userProfile?.cards?.length === 0) {
+      setCards([]);
+    }
     setCardLoading(false);
   };
 
   useEffect(() => {
     if (refresh) {
+      // console.log("Refreshing cards...");
+      // console.log("Refresh:", refresh);
+      // console.log("User Profile:", userProfile);
+      // console.log("Cards:", cards);
       setRefresh(false);
       retriveCards();
       router.refresh();
+      console.log("Refreshing cards...");
+      console.log("Refresh:", refresh);
+      console.log("User Profile:", userProfile);
+      console.log("Cards:", cards);
     }
   }, [refresh]);
 
@@ -127,6 +139,7 @@ const CheckoutForm = ({ rate, onPaymentSuccess }) => {
     setSelectedPaymentAmount(`Paying with card ending in ${last4}.`);
     setUseCard(paymentId);
 
+
     try {
       const response = await fetch("/api/create-customer-and-payment-intent", {
         method: "POST",
@@ -144,19 +157,83 @@ const CheckoutForm = ({ rate, onPaymentSuccess }) => {
       }
 
       const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret);
+      // toast.success("Payment successful! Proceeding with booking.");
+      // Proceed with booking after successful payment
+      const jwtToken = Cookies.get("authToken");
+      const bookingData = {
+        pswEmail: currPsw?.email,
+        pswName: currPsw?.name,
+        pswAppointmentDate: searchParams.day,
+        clientEmail: userProfile?.email,
+        appointmentAddress: userProfile?.address.address,
+        appointmentLocation: userProfile?.address.location,
+        clientName: `${userProfile?.fname} ${userProfile?.lname}`,
+        pswRate: currPsw?.rate,
+      };
+    
+      const bookingResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/private/user/booking`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${jwtToken}`,
+        },
+        body: JSON.stringify({ paymentCard: paymentId, bookingData }),
+      });
+    
+      const bookingResult = await bookingResponse.json();
+      console.log("Booking Response:", bookingResult);
+      
+      if (bookingResponse.status !== 201) {
+        throw new Error("Failed to complete booking.");
+      }
+      
+      // toast.success("Booking confirmed! Check your email for details.");
 
-      if (confirmError) {
-        console.error("Payment Error:", confirmError.message);
-        toast.error(`Payment failed: ${confirmError.message}`);
-      } else if (paymentIntent.status === "succeeded") {
+      // if (confirmError) {
+      //   console.error("Payment Error:", confirmError.message);
+      //   toast.error(`Payment failed: ${confirmError.message}`);
+      if (paymentIntent.status === "succeeded") {
         toast.success("Payment successful! Thank you for your booking.");
         onPaymentSuccess();
       }
     } catch (error) {
+      console.error("Payment Error:", error);
       toast.error("An error occurred. Please try again.");
-    } finally {
+    }
+    finally {
       setIsProcessing(false);
       setSelectedPaymentAmount(null);
+    }
+
+  };
+
+  const handleRemoveCard = async (paymentId) => {
+    setIsProcessing(true);
+    console.log("Payment ID:", paymentId);
+    console.log("User Email:", userEmail);
+    try {
+      // Call the Next.js API to remove the card
+      const response = await fetch("/api/remove-card", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paymentMethodId: paymentId, email: userEmail }),
+      });
+
+      if (response.status === 200) {
+        const { updatedCards } = await response.json();
+        const currUser = { ...userProfile, cards: updatedCards };
+        setUserProfile(currUser);
+        setRefresh(true);
+        toast.success("Card removed successfully!");
+      } else {
+        const { error } = await response.json();
+        toast.error(`Failed to remove card: ${error}`);
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+      console.error("Error removing card:", error.message);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -168,7 +245,6 @@ const CheckoutForm = ({ rate, onPaymentSuccess }) => {
           - ${rate.toFixed(2)}
         </span>
       </h2>
-
 
       {selectedPaymentAmount && (
         <p className="text-blue-600 text-center mb-4 font-semibold">
@@ -191,43 +267,25 @@ const CheckoutForm = ({ rate, onPaymentSuccess }) => {
                   Expires: {card.exp_month}/{card.exp_year}
                 </p>
               </div>
-              <button
-                className={`flex items-center justify-center px-4 py-2 rounded-md font-semibold transition duration-300 ${isProcessing && useCard === card.paymentId
+              <div className="flex space-x-2">
+                <button
+                  className={`px-4 py-2 rounded-md font-semibold transition duration-300 ${isProcessing && useCard === card.paymentId
                     ? "bg-gray-400 text-white cursor-not-allowed"
                     : "bg-green-500 text-white hover:bg-green-600"
-                  }`}
-                onClick={() => handleUseCard(card.paymentId, card.last4)}
-                disabled={isProcessing}
-              >
-                {useCard === card.paymentId && isProcessing ? (
-                  <span className="flex items-center">
-                    <svg
-                      className="animate-spin h-5 w-5 mr-2 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291l1.414-1.414A5.978 5.978 0 016 12H2c0 2.21.896 4.21 2.343 5.657z"
-                      ></path>
-                    </svg>
-                    Processing...
-                  </span>
-                ) : (
-                  "Use Card"
-                )}
-              </button>
-
+                    }`}
+                  onClick={() => handleUseCard(card.paymentId, card.last4)}
+                  disabled={isProcessing}
+                >
+                  Use Card
+                </button>
+                <button
+                  className="px-4 py-2 rounded-md font-semibold bg-red-500 text-white hover:bg-red-600 transition duration-300"
+                  onClick={() => handleRemoveCard(card.paymentId)}
+                  disabled={isProcessing}
+                >
+                  Remove
+                </button>
+              </div>
             </div>
           ))}
         </div>

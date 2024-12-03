@@ -1,3 +1,5 @@
+import moment from "moment-timezone";
+
 const AssitiveFetch = async (pathReceived, methodReceived, payloadReceived) => {
   const response = await fetch(pathReceived, {
     method: methodReceived,
@@ -74,9 +76,51 @@ function constructSearchURL({ name, rate, day, radius, lat, lon }) {
   }
   
 
+/**
+ * Converts the array of booking objects into the required format for react-big-calendar
+ * @param {Array} bookingsArray - The original array of booking objects
+ * @param {string} userType - Either "PSW" or "Client"
+ * @returns {Array} An array of calendar events
+ */
+
+const convertBookingsToEvents = (bookingsArray, userType) => {
+  if (!bookingsArray) return [];
+  
+  return bookingsArray.map((booking) => {
+    const { appointmentDate, client, psw, duration } = booking;
+
+    // Parse the date in EST (Toronto time zone)
+    const startDate = moment.tz(appointmentDate, "America/Toronto").toDate();
+    const endDate = new Date(startDate.getTime() + duration * 60000); // Add duration in minutes
+
+    return {
+      id: booking._id,
+      title:
+        userType === "PSW"
+          ? `Client: ${client.name} (${client.email})`
+          : `PSW: ${psw.name} (${psw.email})`,
+      start: startDate,
+      end: endDate,
+      details: {
+        email: userType === "PSW" ? client.email : psw.email,
+        name: userType === "PSW" ? client.name : psw.name,
+        rate: userType === "PSW" ? psw.rate : client.rate,
+        picture: userType === "PSW" ? client.picture : psw.picture,
+        address: booking.address.fullAddress,
+        location: booking.address.location.coordinates,
+        document: psw.document,
+        bookingId: booking.bookingId,
+        status: booking.status,
+        duration: booking.duration,
+      },
+    };
+  });
+};
+
 
 export {
     AssitiveFetch,
     loginUsers,
-    constructSearchURL
+    constructSearchURL,
+    convertBookingsToEvents
 }
