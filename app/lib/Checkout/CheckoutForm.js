@@ -182,18 +182,18 @@ const CheckoutForm = ({ rate, onPaymentSuccess, currPsw }) => {
     
       const bookingResult = await bookingResponse.json();
       console.log("Booking Response:", bookingResult);
-      
-      if (bookingResponse.status !== 201) {
-        throw new Error("Failed to complete booking.");
-      }
-      
-      // toast.success("Booking confirmed! Check your email for details.");
+      console.log("Booking Status:", bookingResult.status);
+      console.log("Booking Error:", bookingResult.error);
 
-      // if (confirmError) {
-      //   console.error("Payment Error:", confirmError.message);
-      //   toast.error(`Payment failed: ${confirmError.message}`);
-      if (paymentIntent.status === "succeeded") {
-        toast.success("Payment successful! Thank you for your booking.");
+      // if(bookingResult.status === 200){
+      //   console.log("Booking confirmed! Check your email for details.");
+      //   toast.success("Booking confirmed! Check your email for details.");
+      // }else 
+      if(bookingResult.status === 'error'){
+        console.error("Payment Error:", bookingResult.error.message);
+        toast.error(`Payment failed: ${bookingResult.error.message}`);
+      }else if (paymentIntent.status === "succeeded" && bookingResult.success === true) {
+        toast.success("Payment successful! Thank you for your booking. Check your email for details.");
         onPaymentSuccess();
       }
     } catch (error) {
