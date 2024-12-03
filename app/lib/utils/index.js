@@ -1,3 +1,5 @@
+import moment from "moment-timezone";
+
 const AssitiveFetch = async (pathReceived, methodReceived, payloadReceived) => {
   const response = await fetch(pathReceived, {
     method: methodReceived,
@@ -80,14 +82,16 @@ function constructSearchURL({ name, rate, day, radius, lat, lon }) {
  * @param {string} userType - Either "PSW" or "Client"
  * @returns {Array} An array of calendar events
  */
+
 const convertBookingsToEvents = (bookingsArray, userType) => {
   if (!bookingsArray) return [];
+  
   return bookingsArray.map((booking) => {
     const { appointmentDate, client, psw, duration } = booking;
 
-    // Convert appointmentDate to Date object
-    const startDate = new Date(appointmentDate);
-    const endDate = new Date(startDate.getTime() + duration * 60000); // Add duration (in minutes)
+    // Parse the date in EST (Toronto time zone)
+    const startDate = moment.tz(appointmentDate, "America/Toronto").toDate();
+    const endDate = new Date(startDate.getTime() + duration * 60000); // Add duration in minutes
 
     return {
       id: booking._id,
@@ -112,7 +116,6 @@ const convertBookingsToEvents = (bookingsArray, userType) => {
     };
   });
 };
-
 
 
 export {

@@ -157,9 +157,7 @@ const CheckoutForm = ({ rate, onPaymentSuccess, currPsw }) => {
       }
 
       const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret);
-
       // toast.success("Payment successful! Proceeding with booking.");
-      
       // Proceed with booking after successful payment
       const jwtToken = Cookies.get("authToken");
       const bookingData = {
@@ -185,20 +183,21 @@ const CheckoutForm = ({ rate, onPaymentSuccess, currPsw }) => {
       const bookingResult = await bookingResponse.json();
       console.log("Booking Response:", bookingResult);
       
-      if (bookingResponse.status !== 200) {
+      if (bookingResponse.status !== 201) {
         throw new Error("Failed to complete booking.");
       }
       
       // toast.success("Booking confirmed! Check your email for details.");
 
-      if (confirmError) {
-        console.error("Payment Error:", confirmError.message);
-        toast.error(`Payment failed: ${confirmError.message}`);
-      } else if (paymentIntent.status === "succeeded") {
+      // if (confirmError) {
+      //   console.error("Payment Error:", confirmError.message);
+      //   toast.error(`Payment failed: ${confirmError.message}`);
+      if (paymentIntent.status === "succeeded") {
         toast.success("Payment successful! Thank you for your booking.");
         onPaymentSuccess();
       }
     } catch (error) {
+      console.error("Payment Error:", error);
       toast.error("An error occurred. Please try again.");
     }
     finally {
