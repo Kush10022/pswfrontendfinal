@@ -217,6 +217,7 @@ const CheckoutForm = ({ rate, onPaymentSuccess, currPsw }) => {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ paymentMethodId: paymentId, email: userEmail }),
+        
       });
 
       if (response.status === 200) {
