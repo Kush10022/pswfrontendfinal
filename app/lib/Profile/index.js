@@ -441,7 +441,7 @@ export default function ProfilePage() {
                   user.bookings.map((booking, index) => {
                     // Calculate the date minus one day
                     const appointmentDate = new Date(booking.appointmentDate);
-                    appointmentDate.setDate(appointmentDate.getDate() - 1);
+                    appointmentDate.setDate(appointmentDate.getDate());
                     const formattedDate = appointmentDate
                       .toISOString()
                       .split("T")[0]; // Format the date as YYYY-MM-DD

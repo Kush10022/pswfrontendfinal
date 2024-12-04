@@ -18,6 +18,7 @@ const Appointments = ({ userType }) => {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   // setBookings(userProfile.bookings);
+  console.log("Booking: ", bookings);
   console.log("UserProfile Bookings: ", userProfile);
 
   const handleNextMonth = () => {

@@ -89,9 +89,14 @@ const convertBookingsToEvents = (bookingsArray, userType) => {
   return bookingsArray.map((booking) => {
     const { appointmentDate, client, psw, duration } = booking;
 
-    // Parse the date in EST (Toronto time zone)
-    const startDate = moment.tz(appointmentDate, "America/Toronto").toDate();
-    const endDate = new Date(startDate.getTime() + duration * 60000); // Add duration in minutes
+   // Parse the date in EST (Toronto time zone)
+   let startDate = moment.tz(appointmentDate, "America/Toronto").toDate();
+    
+   // Increment the date by one day
+   startDate = new Date(startDate.getTime() + 24 * 60 * 60 * 1000);
+
+   // Calculate the end date
+   const endDate = new Date(startDate.getTime() + duration * 60000);
 
     return {
       id: booking._id,
