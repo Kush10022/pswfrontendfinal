@@ -41,7 +41,7 @@ export default function ProfilePage() {
     user?.document || "https://cdn.filestackcontent.com/wcrjf9qPTCKXV3hMXDwK"
   );
   const router = useRouter();
-
+  console.log("User:", user);
   // Edit Hovers
   const [addressHover, setAddressHover] = useState(false);
   const [personalInfoHover, setPersonalInfoHover] = useState(false);
@@ -438,12 +438,22 @@ export default function ProfilePage() {
               <h2 className="text-lg font-bold mb-4">Upcoming Bookings</h2>
               <ul>
                 {user?.bookings?.length ? (
-                  user.bookings.map((booking, index) => (
-                    <li key={index} className="mb-2">
-                      <strong>Booking {index + 1}:</strong> {booking.date} with{" "}
-                      {booking.clientName}
-                    </li>
-                  ))
+                  user.bookings.map((booking, index) => {
+                    // Calculate the date minus one day
+                    const appointmentDate = new Date(booking.appointmentDate);
+                    appointmentDate.setDate(appointmentDate.getDate() - 1);
+                    const formattedDate = appointmentDate
+                      .toISOString()
+                      .split("T")[0]; // Format the date as YYYY-MM-DD
+
+                    return (
+                      <li key={index} className="mb-2">
+                        <strong>Booking {index + 1}:</strong> Date:{" "}
+                        {formattedDate} with{" "}
+                        {user?.isPSW ? booking.client.name : booking.psw.name}
+                      </li>
+                    );
+                  })
                 ) : (
                   <p>No upcoming bookings.</p>
                 )}
